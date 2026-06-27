@@ -50,10 +50,14 @@ class App:
         self.home_button_image = ctk.CTkImage(light_image = self.home_raw_image,
                                               dark_image = self.home_raw_image)
 
-        self.title_home_button = ctk.CTkButton(self.home.navbar, height=60, width=60, text="Forge", image=self.forge_button_image, command=lambda: self.home.on_click_home(), fg_color=self.config.card_color)
+        self.title_home_button = ctk.CTkButton(self.home.navbar, height=60, width=60, text="",
+                                               image=self.forge_button_image, command=lambda: self.home.on_click_home(),
+                                               fg_color=self.config.card_color, hover_color=self.config.card_color)
         self.title_home_button.grid(row=0, column=0, pady=10)
 
-        self.home_button = ctk.CTkButton(self.home.navbar, height=60, width=60, text="Home", font=self.config.card_font, text_color=self.config.gold_accent_color, image=self.home_button_image, fg_color=self.config.card_color)
+        self.home_button = ctk.CTkButton(self.home.navbar, height=60, width=60, text="Home", font=self.config.card_font,
+                                         text_color=self.config.gold_accent_color, image=self.home_button_image,
+                                         fg_color=self.config.card_color)
         self.home_button.grid(row=1, column=0, pady=10)
 
 if __name__ == "__main__":

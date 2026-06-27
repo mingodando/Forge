@@ -6,6 +6,7 @@ class Config:
         self.topbar_color = None
         self.gold_accent_color = None
         self.text_color = None
+        self.hover_color = None
 
         self.card_font = None
 
@@ -17,6 +18,7 @@ class Config:
         self.topbar_color = "#161616"
         self.gold_accent_color = "#c8a96e"
         self.text_color = "e0e0e0"
+        self.hover_color = "2a2a2a"
 
         #--- Font ---#
-        self.card_font = ("Segoe UI", 13,)
+        self.card_font = ("Segoe UI", 13, "bold")
