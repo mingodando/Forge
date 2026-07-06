@@ -27,7 +27,7 @@ class Config:
         self.topbar_bg_color = "#2a2a2a"
         self.gold_accent_color = "#c8a96e"
         self.text_color = "e0e0e0"
-        self.hover_color = "2a2a2a"
+        self.hover_color = "#2a2a2a"
         self.border_color = "#2a2a2a"
         self.muted_text_color = "#555555"
 
