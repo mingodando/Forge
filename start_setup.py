@@ -12,6 +12,8 @@ class Setup:
         self.navbar = None
         self.content_frame = None
 
+        self.weights(self.topbar, self.content_frame, self.navbar)
+
 #----- Starting Functions -----#
     def create_home_page(self, root):
         self.root = root
@@ -24,8 +26,12 @@ class Setup:
         self.navbar.configure(fg_color=self.config.navbar_color)
         self.navbar.grid_propagate(False)
         self.content_frame = ctk.CTkFrame(self.root, width=1160, height=620)
-        self.content_frame.grid(row=1, column=1, sticky="nsew")
+        self.content_frame.grid(row=1, column=1, sticky="se")
         self.content_frame.configure(fg_color=self.config.background_color)
+
+    def weights(self, topbar, content_frame, navbar):
+        #--- Topbar ---#
+        pass
 
     def on_click_home(self):
         self.content_frame.tkraise()

@@ -3,7 +3,8 @@ from PIL import Image
 import os
 
 from config import Config
-from setup import Setup
+from start_setup import Setup
+from home_page import Home
 
 class App:
     def __init__(self):
@@ -16,10 +17,14 @@ class App:
         #--- Other File Activation ---#
         self.setup = Setup()
         self.config = Config()
+        self.home_page = Home()
+        self.home_page.main()
         self.config.main()
 
         #--- Topbar Widgets ---#
-        self.currency_display = None
+        self.topbar_currency_display = None
+        self.topbar_level_display = None
+        self.xp_level_display = None
 
         #--- Navbar Widgets ---#
         self.title_home_button = None
@@ -47,25 +52,40 @@ class App:
 
         self.root.mainloop()
 
+    def setup_directory(self):
+        self.current_directory = os.getcwd()
+        return current_directory
+
     def setup_topbar_images(self):
         pass
 
     def setup_topbar(self):
-        self.setup.topbar.columnconfigure(0, weight=2)
+        self.setup.topbar.columnconfigure(0, weight=1)
+        self.setup.topbar.rowconfigure(1, weight=1)
 
-        self.currency_display = ctk.CTkLabel(self.setup.topbar, height=50, width=150, text=f"Currency = ",
+        self.topbar_currency_display = ctk.CTkLabel(self.setup.topbar, height=40, width=150, text=f"Currency = ",
                                              font=self.config.card_font, fg_color=self.config.topbar_bg_color,
                                              bg_color=self.config.topbar_color, corner_radius=10)
-        self.currency_display.grid(row=0, column=0, padx=10, pady=24, sticky="ens")
+        self.topbar_currency_display.grid(row=0, column=0, padx=10, pady=30, sticky="ens")
+
+        self.topbar_level_display = ctk.CTkLabel(self.setup.topbar, height=40, width=100, text=f"Lv. ",
+                                               font=self.config.card_font, fg_color=self.config.topbar_bg_color,
+                                               bg_color=self.config.topbar_color, corner_radius=10)
+        self.topbar_level_display.grid(row=0, column=1, padx=10, pady=30, sticky="ens")
+
+        self.xp_level_display = ctk.CTkLabel(self.setup.topbar, height=40, width=150, text=f" XP",
+                                             font=self.config.card_font, fg_color=self.config.topbar_bg_color,
+                                             bg_color=self.config.topbar_color, corner_radius=10)
+        self.xp_level_display.grid(row=0, column=2, padx=10, pady=30, sticky="ens")
 
     def setup_navbar_images(self):
-        self.current_directory = os.getcwd()
-
+        self.current_directory = self.setup_directory()
         self.forge_raw_image = Image.open(rf"{current_directory}\images\forge_logo.jpg")
         self.home_raw_image = Image.open(rf"{current_directory}\images\home_logo.jpg")
         self.quest_raw_image = Image.open(rf"{current_directory}\images\quest_logo.jpg")
 
         return self.forge_raw_image
+
     def setup_navbar(self):
         self.setup_navbar_images()
 
@@ -78,13 +98,14 @@ class App:
         self.quest_button_image = ctk.CTkImage(light_image = self.quest_raw_image,)
 
         self.title_home_button = ctk.CTkButton(self.setup.navbar, height=60, width=60, text="",
-                                               image=self.forge_button_image, command=lambda: self.setup.on_click_home(),
+                                               command=lambda: self.setup.on_click_home(), image=self.forge_button_image,
                                                fg_color=self.config.card_color, hover_color=self.config.hover_color)
         self.title_home_button.grid(row=0, column=0, pady=10)
 
         self.home_button = ctk.CTkButton(self.setup.navbar, height=60, width=60, text="Home", font=self.config.card_font,
                                          text_color=self.config.gold_accent_color, image=self.home_button_image,
-                                         fg_color=self.config.card_color, hover_color=self.config.hover_color)
+                                         fg_color=self.config.card_color, hover_color=self.config.hover_color,
+                                         command=lambda: self.home_page.setup_home_page())
         self.home_button.grid(row=1, column=0, pady=10)
 
         self.quest_button = ctk.CTkButton(self.setup.navbar, height=60, width=60, text="Quest", font=self.config.card_font,
