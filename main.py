@@ -52,9 +52,8 @@ class App:
 
         self.root.mainloop()
 
-    def setup_directory(self):
-        self.current_directory = os.getcwd()
-        return current_directory
+    def setup_app(self):
+        self.setup.setup_files()
 
     def setup_topbar_images(self):
         pass
@@ -79,10 +78,10 @@ class App:
         self.xp_level_display.grid(row=0, column=2, padx=10, pady=30, sticky="ens")
 
     def setup_navbar_images(self):
-        self.current_directory = self.setup_directory()
-        self.forge_raw_image = Image.open(rf"{current_directory}\images\forge_logo.jpg")
-        self.home_raw_image = Image.open(rf"{current_directory}\images\home_logo.jpg")
-        self.quest_raw_image = Image.open(rf"{current_directory}\images\quest_logo.jpg")
+        self.current_directory = self.setup.setup_directory()
+        self.forge_raw_image = Image.open(rf"{self.current_directory}\images\forge_logo.jpg")
+        self.home_raw_image = Image.open(rf"{self.current_directory}\images\home_logo.jpg")
+        self.quest_raw_image = Image.open(rf"{self.current_directory}\images\quest_logo.jpg")
 
         return self.forge_raw_image
 
@@ -115,6 +114,5 @@ class App:
 
 if __name__ == "__main__":
     app = App()
-    current_directory = os.getcwd()
-    print(current_directory)
+    current_directory = app.setup_app()
     app.main()
