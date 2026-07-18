@@ -7,12 +7,8 @@ class Time:
         self.time_format = None
         self.current_time = None
         self.username = None
-
-    def find_date(self):
-        self.dt = datetime.now()
-
-        full_name = self.dt.strftime("%A")
-        print(full_name)
+        self.time = None
+        self.today_date = None
 
     def find_time(self):
         self.dt = datetime.now().time()
@@ -35,4 +31,10 @@ class Time:
 
         self.username = data["username"]
 
-        return f"{self.current_time} {self.username}!"
+        return f"{self.current_time}, {self.username}!"
+
+    def print_date(self):
+        self.today_date = datetime.now().strftime("%A")
+        self.time = self.find_time().strip("Good ")
+
+        return f"{self.today_date} {self.time}"

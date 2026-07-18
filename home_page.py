@@ -1,7 +1,5 @@
-import customtkinter as ctk
-
-from config import Config
-from start_setup import Setup
+from backend.config import Config
+from backend.start_setup import Setup
 
 class Home:
     def __init__(self):

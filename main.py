@@ -1,10 +1,10 @@
 import customtkinter as ctk
 from PIL import Image
 
-from config import Config
-from start_setup import Setup
+from backend.config import Config
+from backend.start_setup import Setup
 from home_page import Home
-from clock import Time
+from backend.clock import Time
 
 class App:
     def __init__(self):
@@ -27,6 +27,7 @@ class App:
         self.topbar_level_display = None
         self.xp_level_display = None
         self.onboard_display1 = None
+        self.onboard_display2 = None
 
         #--- Navbar Widgets ---#
         self.title_home_button = None
@@ -50,6 +51,7 @@ class App:
         self.setup.navbar.columnconfigure(0, weight=1)
         self.setup_navbar()
         self.setup_topbar()
+        self.setup_app()
 
         self.root.mainloop()
 
@@ -63,8 +65,11 @@ class App:
         self.setup.topbar.columnconfigure(0, weight=1)
         self.setup.topbar.rowconfigure(1, weight=1)
 
-        self.onboard_display1 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_time())
-        self.onboard_display1.grid(row=0, column=0, pady=10)
+        self.onboard_display1 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_date(), font=self.config.page_font, text_color=self.config.muted_text)
+        self.onboard_display1.grid(row=0, column=0, padx=20, sticky="w")
+
+        self.onboard_display2 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_time(), font=self.config.levelup_font, text_color=self.config.primary_text)
+        self.onboard_display2.grid(row=1, column=0, padx=20, sticky="wn")
 
     def setup_navbar_images(self):
         self.current_directory = self.setup.setup_directory()
@@ -87,21 +92,20 @@ class App:
 
         self.title_home_button = ctk.CTkButton(self.setup.navbar, height=60, width=60, text="",
                                                command=lambda: self.setup.on_click_home(), image=self.forge_button_image,
-                                               fg_color=self.config.navbar_color, hover_color=self.config.hover_color)
+                                               fg_color=self.config.sidebar_color, hover_color=self.config.navhover_color)
         self.title_home_button.grid(row=0, column=0, pady=10)
 
-        self.home_button = ctk.CTkButton(self.setup.navbar, height=60, width=60, text="Home", font=self.config.title_font,
-                                         text_color=self.config.gold_accent_color, image=self.home_button_image,
-                                         fg_color=self.config.navbar_color, hover_color=self.config.hover_color,
+        self.home_button = ctk.CTkButton(self.setup.navbar, height=60, width=60, text="Home", font=self.config.page_font,
+                                         text_color=self.config.primary_text, image=self.home_button_image,
+                                         fg_color=self.config.sidebar_color, hover_color=self.config.navhover_color,
                                          command=lambda: self.home_page.setup_home_page())
         self.home_button.grid(row=1, column=0, pady=10)
 
-        self.quest_button = ctk.CTkButton(self.setup.navbar, height=60, width=60, text="Quest", font=self.config.title_font,
-                                          text_color=self.config.gold_accent_color, image=self.quest_button_image,
-                                          fg_color=self.config.navbar_color, hover_color=self.config.hover_color)
+        self.quest_button = ctk.CTkButton(self.setup.navbar, height=60, width=60, text="Quest", font=self.config.page_font,
+                                          text_color=self.config.primary_text, image=self.quest_button_image,
+                                          fg_color=self.config.sidebar_color, hover_color=self.config.navhover_color)
         self.quest_button.grid(row=2, column=0, pady=10)
 
 if __name__ == "__main__":
     app = App()
-    current_directory = app.setup_app()
     app.main()
