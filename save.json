@@ -1,9 +1,10 @@
-[
-    "level",
-    "xp",
-    "coins",
-    "materials",
-    "gear",
-    "streaks",
-    "history"
-]
+{
+    "username" :  "Ming",
+    "level" : 0,
+    "xp" : 0,
+    "coins" : 0,
+    "materials" : 0,
+    "gear" : [],
+    "streaks" : 0,
+    "history" : []
+}

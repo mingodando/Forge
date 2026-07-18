@@ -1,10 +1,10 @@
 import customtkinter as ctk
 from PIL import Image
-import os
 
 from config import Config
 from start_setup import Setup
 from home_page import Home
+from clock import Time
 
 class App:
     def __init__(self):
@@ -18,6 +18,7 @@ class App:
         self.setup = Setup()
         self.config = Config()
         self.home_page = Home()
+        self.time = Time()
         self.home_page.main()
         self.config.main()
 
@@ -25,6 +26,7 @@ class App:
         self.topbar_currency_display = None
         self.topbar_level_display = None
         self.xp_level_display = None
+        self.onboard_display1 = None
 
         #--- Navbar Widgets ---#
         self.title_home_button = None
@@ -61,20 +63,8 @@ class App:
         self.setup.topbar.columnconfigure(0, weight=1)
         self.setup.topbar.rowconfigure(1, weight=1)
 
-        self.topbar_currency_display = ctk.CTkLabel(self.setup.topbar, height=40, width=150, text=f"Currency = ",
-                                             font=self.config.body_font, fg_color=self.config.topbar_bg_color,
-                                             bg_color=self.config.topbar_color, corner_radius=10)
-        self.topbar_currency_display.grid(row=0, column=0, padx=10, pady=30, sticky="ens")
-
-        self.topbar_level_display = ctk.CTkLabel(self.setup.topbar, height=40, width=100, text=f"Lv. ",
-                                               font=self.config.body_font, fg_color=self.config.topbar_bg_color,
-                                               bg_color=self.config.topbar_color, corner_radius=10)
-        self.topbar_level_display.grid(row=0, column=1, padx=10, pady=30, sticky="ens")
-
-        self.xp_level_display = ctk.CTkLabel(self.setup.topbar, height=40, width=150, text=f" XP",
-                                             font=self.config.body_font, fg_color=self.config.topbar_bg_color,
-                                             bg_color=self.config.topbar_color, corner_radius=10)
-        self.xp_level_display.grid(row=0, column=2, padx=10, pady=30, sticky="ens")
+        self.onboard_display1 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_time())
+        self.onboard_display1.grid(row=0, column=0, pady=10)
 
     def setup_navbar_images(self):
         self.current_directory = self.setup.setup_directory()
