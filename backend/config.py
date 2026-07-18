@@ -3,8 +3,8 @@ import os
 import ctypes
 
 # 1. Register the font file dynamically at runtime
-# Assumes SpaceGrotesk-Regular.ttf is in the same folder as your scripts
-FONT_PATH = "SpaceGrotesk-Regular.ttf"
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FONT_PATH = os.path.join(PROJECT_ROOT, "font", "SpaceGrotesk-Regular.ttf")
 
 if os.path.exists(FONT_PATH):
     ctypes.windll.gdi32.AddFontResourceW(FONT_PATH)
