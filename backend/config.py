@@ -40,6 +40,7 @@ class Config:
         self.ember_orange = None
         self.ember_light = None
         self.amber_muted = None
+        self.home_color = None
 
         #--- Text Color ---#
         self.primary_text = None
@@ -85,6 +86,7 @@ class Config:
         self.navhover_color = "#181209"
 
         self.amber = "#f2b45f"
+        self.home_color = "#20170D"
         self.ember_orange = "#e0763c"
         self.ember_light = "#f2903c"
         self.amber_muted = "#c99a5f"

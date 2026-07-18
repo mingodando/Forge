@@ -11,7 +11,6 @@ from pages.settings_page import Settings
 from backend.clock import Time
 from backend.setup_navbar import SetupNavbar
 
-
 class App:
     def __init__(self):
         #--- Main Window Activation ---#
