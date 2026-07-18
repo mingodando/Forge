@@ -67,7 +67,7 @@ class SetupNavbar:
 
         self.logo_button_image = ctk.CTkImage(light_image=self.logo_raw_image,
                                                dark_image=self.logo_raw_image,
-                                              size=(120, 120))
+                                              size=(80, 80))
 
         self.home_button_image = ctk.CTkImage(light_image=self.home_raw_image,
                                               dark_image=self.home_raw_image)
@@ -87,7 +87,9 @@ class SetupNavbar:
         self.settings_button_image = ctk.CTkImage(light_image=self.settings_raw_image,
                                                 dark_image=self.settings_raw_image)
 
-        self.title_home_button = ctk.CTkLabel(self.setup.navbar, height=60, width=60, text="", image=self.logo_button_image)
+        self.title_home_button = ctk.CTkLabel(self.setup.navbar, height=60, width=120, text="Forge",
+                                              font=self.config.levelup_font, text_color=self.config.primary_text,
+                                              image=self.logo_button_image, compound="left")
         self.title_home_button.grid(row=0, column=0)
 
         self.home_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Home", font=self.config.page_font,

@@ -29,7 +29,7 @@ class Home:
         self.xpbar_frame.grid(row=1, column=0, padx=35, pady=20, sticky="nsew")
 
         self.four_frames = ctk.CTkFrame(self.setup.content_frame, width=1050, height=150, fg_color="red", corner_radius=30)
-        self.four_frames.grid(row=2, column=0, padx=35, pady=20, sticky="nsew")
+        self.four_frames.grid(row=2, column=0, padx=35, sticky="nsew")
 
         self.four_frames.grid_propagate(False)
 

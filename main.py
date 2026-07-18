@@ -8,8 +8,8 @@ from pages.habit_page import Habit
 from pages.forge_page import Forge
 from pages.shop_page import Shop
 from pages.settings_page import Settings
-from backend.clock import Time
-from backend.setup_navbar import SetupNavbar
+from home_back.clock import Time
+from home_back.setup_navbar import SetupNavbar
 
 class App:
     def __init__(self):
@@ -58,7 +58,7 @@ class App:
 #----- Starting Functions -----#
     def main(self):
         self.root.title("Forge")
-        self.root.geometry("1280x720")
+        self.root.geometry("1280x800")
 
         self.setup.create_home_page(self.root)
         self.setup.navbar.columnconfigure(0, weight=1)
@@ -80,7 +80,7 @@ class App:
         self.setup.topbar.rowconfigure(1, weight=1)
 
         self.onboard_display1 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_date(), font=self.config.page_font, text_color=self.config.muted_text)
-        self.onboard_display1.grid(row=0, column=0, padx=20, sticky="w")
+        self.onboard_display1.grid(row=0, column=0, padx=20, pady=(10,0), sticky="w")
 
         self.onboard_display2 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_time(), font=self.config.levelup_font, text_color=self.config.primary_text)
         self.onboard_display2.grid(row=1, column=0, padx=20, sticky="wn")

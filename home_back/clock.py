@@ -36,5 +36,6 @@ class Time:
     def print_date(self):
         self.today_date = datetime.now().strftime("%A")
         self.time = self.find_time().strip("Good ")
+        phrase = f"{self.today_date} {self.time}".upper()
 
-        return f"{self.today_date} {self.time}"
+        return phrase
