@@ -2,16 +2,17 @@ import customtkinter as ctk
 import json
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SAVE_PATH = os.path.join(BASE_DIR, "save.json")
+from backend.directory_setup import Directory
 
 class Currency:
     def __init__(self):
-        pass
+        self.directory = Directory()
+
     def main(self):
         pass
     def read_file(self):
-        with open(SAVE_PATH, "r") as f:
+        path = self.directory.main()
+        with open(path, "r") as f:
             return json.load(f)
     def get_currencies(self):
         data = self.read_file()

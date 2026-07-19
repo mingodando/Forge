@@ -10,6 +10,7 @@ from pages.habit_page import Habit
 from pages.forge_page import Forge
 from pages.settings_page import Settings
 from pages.shop_page import Shop
+from backend.directory_setup import Directory
 
 class SetupNavbar:
     def __init__(self, setup):
@@ -22,6 +23,7 @@ class SetupNavbar:
         self.forge = Forge(setup)
         self.shop = Shop(setup)
         self.settings = Settings(setup)
+        self.directory = Directory()
 
         self.current_directory = None
 
@@ -53,14 +55,14 @@ class SetupNavbar:
         self.active_button = None
 
     def setup_navbar_images(self):
-        self.current_directory = self.setup.setup_directory()
-        self.logo_raw_image = Image.open(rf"{self.current_directory}\images\logo.jpg")
-        self.home_raw_image = Image.open(rf"{self.current_directory}\images\home_logo.jpg")
-        self.quest_raw_image = Image.open(rf"{self.current_directory}\images\quest_logo.jpg")
-        self.habit_raw_image = Image.open(rf"{self.current_directory}\images\habit_logo.jpg")
-        self.forge_raw_image = Image.open(rf"{self.current_directory}\images\forge_logo.jpg")
-        self.shop_raw_image = Image.open(rf"{self.current_directory}\images\shop_logo.jpg")
-        self.settings_raw_image = Image.open(rf"{self.current_directory}\images\settings_logo.jpg")
+        self.current_directory = self.directory.images_directory()
+        self.logo_raw_image = Image.open(rf"{self.current_directory}\logo.jpg")
+        self.home_raw_image = Image.open(rf"{self.current_directory}\home_logo.jpg")
+        self.quest_raw_image = Image.open(rf"{self.current_directory}\quest_logo.jpg")
+        self.habit_raw_image = Image.open(rf"{self.current_directory}\habit_logo.jpg")
+        self.forge_raw_image = Image.open(rf"{self.current_directory}\forge_logo.jpg")
+        self.shop_raw_image = Image.open(rf"{self.current_directory}\shop_logo.jpg")
+        self.settings_raw_image = Image.open(rf"{self.current_directory}\settings_logo.jpg")
 
     def setup_navbar(self):
         self.setup_navbar_images()

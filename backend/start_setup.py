@@ -36,10 +36,6 @@ class Setup:
     def on_click_home(self):
         self.content_frame.tkraise()
 
-    def setup_directory(self):
-        self.current_directory = os.getcwd()
-        return self.current_directory
-
     def setup_files(self):
         current_directory = self.directory.backend_directory()
         data = [
