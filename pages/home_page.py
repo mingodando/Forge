@@ -21,6 +21,13 @@ class Home:
         self.quests_completed_frame = None
         self.four_frames = None
 
+        #--- Four Frames Widgets ---#
+        self.coins_label = None
+        self.streak_label = None
+        self.gear_bonus_label = None
+        self.quests_completed_label = None
+
+
     def main(self):
         self.focus_frame = ctk.CTkFrame(self.setup.content_frame, width=1050, height=200, fg_color=self.config.home_color, corner_radius=30)
         self.focus_frame.grid(row=0, column=0, padx=35, sticky="nsew")
@@ -28,7 +35,7 @@ class Home:
         self.xpbar_frame = ctk.CTkFrame(self.setup.content_frame, width=1050, height=50, fg_color=self.config.home_color, corner_radius=30)
         self.xpbar_frame.grid(row=1, column=0, padx=35, pady=20, sticky="nsew")
 
-        self.four_frames = ctk.CTkFrame(self.setup.content_frame, width=1050, height=150, fg_color="red", corner_radius=30)
+        self.four_frames = ctk.CTkFrame(self.setup.content_frame, width=1050, height=150, fg_color=self.config.window_color, corner_radius=30)
         self.four_frames.grid(row=2, column=0, padx=35, sticky="nsew")
 
         self.four_frames.grid_propagate(False)
@@ -36,13 +43,34 @@ class Home:
         self.coins_frame = ctk.CTkFrame(self.four_frames, width=240, height=130, fg_color=self.config.home_color, corner_radius=30)
         self.coins_frame.grid(row=0, column=0, pady=10, padx=(15, 10), sticky="nsew")
 
+        self.coins_frame.grid_propagate(False)
+
         self.streak_frame = ctk.CTkFrame(self.four_frames, width=240, height=130, fg_color=self.config.home_color, corner_radius=30)
         self.streak_frame.grid(row=0, column=1, pady=10, padx=(10, 10), sticky="nsew")
+
+        self.streak_frame.grid_propagate(False)
 
         self.gear_bonus_frame = ctk.CTkFrame(self.four_frames, width=240, height=130, fg_color=self.config.home_color, corner_radius=30)
         self.gear_bonus_frame.grid(row=0, column=2, pady=10, padx=(10, 10), sticky="nsew")
 
+        self.gear_bonus_frame.grid_propagate(False)
+
         self.quests_completed_frame = ctk.CTkFrame(self.four_frames, width=240, height=130, fg_color=self.config.home_color, corner_radius=30)
         self.quests_completed_frame.grid(row=0, column=3, pady=10, padx=(10, 15), sticky="nsew")
 
-        self.focus_frame.tkraise()
+        self.quests_completed_frame.grid_propagate(False)
+
+        self.coin_frame()
+
+    def coin_frame(self):
+        self.coin_label = ctk.CTkLabel(self.coins_frame, text="COINS", font=self.config.timer_font, text_color=self.config.muted_text)
+        self.coin_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")
+
+        self.streak_label = ctk.CTkLabel(self.streak_frame, text="BEST STREAK", font=self.config.timer_font, text_color=self.config.muted_text)
+        self.streak_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")
+
+        self.gear_bonus_label = ctk.CTkLabel(self.gear_bonus_frame, text="GEAR BONUS", font=self.config.timer_font, text_color=self.config.muted_text)
+        self.gear_bonus_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")
+
+        self.quests_completed_label = ctk.CTkLabel(self.quests_completed_frame, text="QUESTS DONE", font=self.config.timer_font, text_color=self.config.muted_text)
+        self.quests_completed_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")

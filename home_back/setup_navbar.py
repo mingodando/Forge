@@ -3,6 +3,8 @@ from PIL import Image
 
 from backend.start_setup import Setup
 from backend.config import Config
+from backend.directory_setup import Directory
+
 
 from pages.home_page import Home
 from pages.quest_page import Quest
@@ -10,7 +12,6 @@ from pages.habit_page import Habit
 from pages.forge_page import Forge
 from pages.settings_page import Settings
 from pages.shop_page import Shop
-from backend.directory_setup import Directory
 
 class SetupNavbar:
     def __init__(self, setup):
