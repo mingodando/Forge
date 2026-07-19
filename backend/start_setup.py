@@ -41,7 +41,6 @@ class Setup:
         data = [
             "level",
             "xp",
-            "coins",
             "materials",
             "gear",
             "streaks",
