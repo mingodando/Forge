@@ -3,10 +3,12 @@ import os
 import json
 
 from backend.config import Config
+from backend.directory_setup import Directory
 
 class Setup:
     def __init__(self):
         self.config = Config()
+        self.directory = Directory()
         self.config.main()
 
         self.current_directory = None
@@ -17,7 +19,6 @@ class Setup:
         self.topbar = None
         self.navbar = None
         self.content_frame = None
-
 
 #----- Starting Functions -----#
     def create_home_page(self, root):
@@ -40,7 +41,7 @@ class Setup:
         return self.current_directory
 
     def setup_files(self):
-        current_directory = self.setup_directory()
+        current_directory = self.directory.backend_directory()
         data = [
             "level",
             "xp",
