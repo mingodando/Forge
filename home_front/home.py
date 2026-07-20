@@ -8,6 +8,7 @@ from pages.home_page import get_home
 class HomePage:
     def __init__(self):
         self.config = Config()
+        self.config.main()
         self.currency = Currency()
         self.focus = FocusCard()
         self.home = get_home()

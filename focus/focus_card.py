@@ -7,6 +7,7 @@ from pages.home_page import get_home
 class FocusCard:
     def __init__(self):
         self.config = Config()
+        self.config.main()
         self.home_page = get_home()
 
         self.canvas = None
