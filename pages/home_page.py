@@ -2,14 +2,18 @@ import customtkinter as ctk
 
 from backend.config import Config
 from backend.start_setup import get_setup
-from currency.currency import Currency
-from focus.focus_card import FocusCard
+
+_home_instance = None
+
+def get_home():
+    global _home_instance
+    if _home_instance is None:
+        _home_instance = Home()
+    return _home_instance
 
 class Home:
     def __init__(self):
         self.config = Config()
-        self.currency = Currency()
-        self.focus = FocusCard()
         self.config.main()
         self.setup = get_setup()
 
@@ -33,7 +37,6 @@ class Home:
         self.gear_bonus_label = None
         self.quests_completed_label = None
 
-
     def main(self):
         self.focus_frame = ctk.CTkFrame(self.setup.content_frame, width=1050, height=200, fg_color=self.config.home_color, corner_radius=30)
         self.focus_frame.grid(row=0, column=0, padx=35, sticky="nsew")
@@ -48,7 +51,6 @@ class Home:
 
         self.coins_frame = ctk.CTkFrame(self.four_frames, width=240, height=130, fg_color=self.config.home_color, corner_radius=30)
         self.coins_frame.grid(row=0, column=0, pady=10, padx=(15, 10), sticky="nsew")
-
         self.coins_frame.grid_propagate(False)
 
         self.streak_frame = ctk.CTkFrame(self.four_frames, width=240, height=130, fg_color=self.config.home_color, corner_radius=30)
@@ -66,35 +68,3 @@ class Home:
 
         self.quests_completed_frame.grid_propagate(False)
 
-        self.coin_frame()
-        self.focus_session()
-
-    def coin_frame(self):
-        self.coin_label = ctk.CTkLabel(self.coins_frame, text="COINS", font=self.config.timer_font, text_color=self.config.muted_text)
-        self.coin_label.grid(row=0, column=0, padx=25, pady=(15,0), sticky="w")
-
-        self.coin_display = ctk.CTkLabel(self.coins_frame, text=str(self.currency.get_currencies()), font=self.config.levelup_font, text_color=self.config.primary_text)
-        self.coin_display.grid(row=1, column=0, padx=25, sticky="w")
-
-        net = self.currency.get_today_flow()["net"]
-        if net > 0:
-            change_text, change_color = f"+{net} today", self.config.success_color
-        elif net < 0:
-            change_text, change_color = f"{net} today", self.config.warning_color
-        else:
-            change_text, change_color = "0 today", self.config.muted_text
-
-        self.coin_change_display = ctk.CTkLabel(self.coins_frame, text=change_text, font=self.config.timer_font, text_color=change_color)
-        self.coin_change_display.grid(row=2, column=0, padx=25, pady=(0, 10), sticky="w")
-
-        self.streak_label = ctk.CTkLabel(self.streak_frame, text="BEST STREAK", font=self.config.timer_font, text_color=self.config.muted_text)
-        self.streak_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")
-
-        self.gear_bonus_label = ctk.CTkLabel(self.gear_bonus_frame, text="GEAR BONUS", font=self.config.timer_font, text_color=self.config.muted_text)
-        self.gear_bonus_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")
-
-        self.quests_completed_label = ctk.CTkLabel(self.quests_completed_frame, text="QUESTS DONE", font=self.config.timer_font, text_color=self.config.muted_text)
-        self.quests_completed_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")
-
-    def focus_session(self):
-        self.focus.create_ring(self.focus_frame)

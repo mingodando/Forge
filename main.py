@@ -2,7 +2,7 @@ import customtkinter as ctk
 
 from backend.config import Config
 from backend.start_setup import get_setup
-from pages.home_page import Home
+from pages.home_page import get_home
 from pages.quest_page import Quest
 from pages.habit_page import Habit
 from pages.forge_page import Forge
@@ -10,6 +10,7 @@ from pages.shop_page import Shop
 from pages.settings_page import Settings
 from home_back.clock import Time
 from home_back.setup_navbar import SetupNavbar
+from home_front.home import HomePage
 
 class App:
     def __init__(self):
@@ -23,13 +24,14 @@ class App:
         self.setup = get_setup()
         self.config = Config()
         self.setupnavbar = SetupNavbar()
-        self.home_page = Home()
+        self.home_page = get_home()
         self.quest_page = Quest()
         self.habit_page = Habit()
         self.forge_page = Forge()
         self.shop_page = Shop()
         self.settings_page = Settings()
         self.time = Time()
+        self.home_front = HomePage()
         self.config.main()
 
         #--- Topbar Widgets ---#
@@ -66,6 +68,7 @@ class App:
         self.setup_topbar()
         self.setup_app()
         self.home_page.main()
+        self.home_front.main()
 
         self.root.mainloop()
 
