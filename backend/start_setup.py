@@ -57,3 +57,12 @@ class Setup:
             print(f"Successfully created the file: {self.data_file_name}")
         else:
             print(f"File already exists")
+
+
+_setup_instance = None
+
+def get_setup():
+    global _setup_instance
+    if _setup_instance is None:
+        _setup_instance = Setup()
+    return _setup_instance

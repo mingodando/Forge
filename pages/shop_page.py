@@ -1,11 +1,11 @@
 from backend.config import Config
-from backend.start_setup import Setup
+from backend.start_setup import get_setup
 
 class Shop:
-    def __init__(self, setup):
+    def __init__(self):
         self.config = Config()
         self.config.main()
-        self.setup = setup
+        self.setup = get_setup()
 
     def main(self):
         pass

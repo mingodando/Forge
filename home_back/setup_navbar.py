@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
 
-from backend.start_setup import Setup
+from backend.start_setup import get_setup
 from backend.config import Config
 from backend.directory_setup import Directory
 
@@ -14,16 +14,16 @@ from pages.settings_page import Settings
 from pages.shop_page import Shop
 
 class SetupNavbar:
-    def __init__(self, setup):
+    def __init__(self):
         self.config = Config()
         self.config.main()
-        self.setup = setup
-        self.home = Home(setup)
-        self.quest = Quest(setup)
-        self.habit = Habit(setup)
-        self.forge = Forge(setup)
-        self.shop = Shop(setup)
-        self.settings = Settings(setup)
+        self.setup = get_setup()
+        self.home = Home()
+        self.quest = Quest()
+        self.habit = Habit()
+        self.forge = Forge()
+        self.shop = Shop()
+        self.settings = Settings()
         self.directory = Directory()
 
         self.current_directory = None

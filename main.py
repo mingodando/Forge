@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 from backend.config import Config
-from backend.start_setup import Setup
+from backend.start_setup import get_setup
 from pages.home_page import Home
 from pages.quest_page import Quest
 from pages.habit_page import Habit
@@ -20,15 +20,15 @@ class App:
         self.current_directory = None
 
         #--- Other File Activation ---#
-        self.setup = Setup()
+        self.setup = get_setup()
         self.config = Config()
-        self.setupnavbar = SetupNavbar(self.setup)
-        self.home_page = Home(self.setup)
-        self.quest_page = Quest(self.setup)
-        self.habit_page = Habit(self.setup)
-        self.forge_page = Forge(self.setup)
-        self.shop_page = Shop(self.setup)
-        self.settings_page = Settings(self.setup)
+        self.setupnavbar = SetupNavbar()
+        self.home_page = Home()
+        self.quest_page = Quest()
+        self.habit_page = Habit()
+        self.forge_page = Forge()
+        self.shop_page = Shop()
+        self.settings_page = Settings()
         self.time = Time()
         self.config.main()
 

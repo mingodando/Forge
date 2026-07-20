@@ -90,6 +90,7 @@ class Config:
         self.ember_orange = "#e0763c"
         self.ember_light = "#f2903c"
         self.amber_muted = "#c99a5f"
+
         #--- Text Color ---#
         self.primary_text = "#f0e9e0"
         self.muted_text = "#9a8f82"

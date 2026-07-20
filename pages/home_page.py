@@ -1,15 +1,17 @@
 import customtkinter as ctk
 
 from backend.config import Config
-from backend.start_setup import Setup
+from backend.start_setup import get_setup
 from currency.currency import Currency
+from focus.focus_card import FocusCard
 
 class Home:
-    def __init__(self, setup):
+    def __init__(self):
         self.config = Config()
         self.currency = Currency()
+        self.focus = FocusCard()
         self.config.main()
-        self.setup = setup
+        self.setup = get_setup()
 
         #--- Widgets ---#
         self.level_label = None
@@ -24,7 +26,7 @@ class Home:
         self.four_frames = None
 
         #--- Four Frames Widgets ---#
-        self.coins_label = None
+        self.coin_label = None
         self.coin_display = None
         self.coin_change_display = None
         self.streak_label = None
@@ -65,6 +67,7 @@ class Home:
         self.quests_completed_frame.grid_propagate(False)
 
         self.coin_frame()
+        self.focus_session()
 
     def coin_frame(self):
         self.coin_label = ctk.CTkLabel(self.coins_frame, text="COINS", font=self.config.timer_font, text_color=self.config.muted_text)
@@ -92,3 +95,6 @@ class Home:
 
         self.quests_completed_label = ctk.CTkLabel(self.quests_completed_frame, text="QUESTS DONE", font=self.config.timer_font, text_color=self.config.muted_text)
         self.quests_completed_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")
+
+    def focus_session(self):
+        self.focus.create_ring(self.focus_frame)
