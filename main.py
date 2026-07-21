@@ -82,10 +82,10 @@ class App:
         self.setup.topbar.columnconfigure(0, weight=1)
         self.setup.topbar.rowconfigure(1, weight=1)
 
-        self.onboard_display1 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_date(), font=self.config.page_font, text_color=self.config.muted_text)
+        self.onboard_display1 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_date(), font=self.config.body_font, text_color=self.config.muted)
         self.onboard_display1.grid(row=0, column=0, padx=20, pady=(10,0), sticky="w")
 
-        self.onboard_display2 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_time(), font=self.config.levelup_font, text_color=self.config.primary_text)
+        self.onboard_display2 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_time(), font=self.config.heading_font, text_color=self.config.text)
         self.onboard_display2.grid(row=1, column=0, padx=20, sticky="wn")
 
 

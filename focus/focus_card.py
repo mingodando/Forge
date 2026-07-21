@@ -29,14 +29,14 @@ class FocusCard:
         size = RING_SIZE
         center = size // 2
 
-        self.canvas = Canvas(self.home_page.focus_frame, width=size, height=size, bg=self.config.nav_tab_color, highlightthickness=0)
+        self.canvas = Canvas(self.home_page.focus_frame, width=size, height=size, bg=self.config.card, highlightthickness=0)
         self.canvas.grid(row=0, column=0, rowspan=5, padx=20, pady=10, sticky="nsew")
 
         self.ring_image = self.render_glow_ring(size)
         self.canvas.create_image(center, center, image=self.ring_image)
 
-        self.canvas.create_text(center, center - 12, text="25:00", fill=self.config.primary_text, font=self.config.levelup_font)
-        self.canvas.create_text(center, center + 13, text="READY", fill=self.config.muted_text, font=self.config.page_font)
+        self.canvas.create_text(center, center - 12, text="25:00", fill=self.config.text, font=self.config.heading_font)
+        self.canvas.create_text(center, center + 13, text="READY", fill=self.config.muted, font=self.config.body_font)
 
     @classmethod
     def render_glow_ring(cls, size):
@@ -60,16 +60,16 @@ class FocusCard:
 
     def create_onboard(self):
         self.zero_label = ctk.CTkLabel(self.home_page.focus_frame, width=160, height=10, text="ZERO-FRICTION START",
-                                       font=self.config.timer_font, text_color=self.config.ember_light, fg_color=self.config.nav_tab_color)
+                                       font=self.config.label_font, text_color=self.config.ember, fg_color=self.config.card)
         self.zero_label.grid(row=0, column=1, pady=(15,0), sticky="new")
 
         self.focus_label = ctk.CTkLabel(self.home_page.focus_frame, width=160, height=30, text="Focus Session",
-                                        font=self.config.levelup_font, text_color=self.config.primary_text)
+                                        font=self.config.heading_font, text_color=self.config.text)
         self.focus_label.grid(row=1, column=1, sticky="n")
 
         self.perk_label = ctk.CTkLabel(self.home_page.focus_frame, width=160, height=30, text="One tap and the forge fires. "
         "Finish a session and it auto-rolls XP,\n coins & materials — the fastest way to make studying pay.",
-                                       font=self.config.page_font, text_color=self.config.primary_text)
+                                       font=self.config.body_font, text_color=self.config.text)
         self.perk_label.grid(row=2, column=1, sticky="n")
 
           

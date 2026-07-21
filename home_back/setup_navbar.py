@@ -91,48 +91,48 @@ class SetupNavbar:
                                                 dark_image=self.settings_raw_image)
 
         self.title_home_button = ctk.CTkLabel(self.setup.navbar, height=60, width=120, text="Forge",
-                                              font=self.config.levelup_font, text_color=self.config.primary_text,
+                                              font=self.config.heading_font, text_color=self.config.text,
                                               image=self.logo_button_image, compound="left")
         self.title_home_button.grid(row=0, column=0)
 
-        self.home_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Home", font=self.config.page_font,
-                                         text_color=self.config.primary_text, image=self.home_button_image,
-                                         fg_color=self.config.sidebar_color, hover_color=self.config.navhover_color,
+        self.home_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Home", font=self.config.body_font,
+                                         text_color=self.config.text, image=self.home_button_image,
+                                         fg_color=self.config.nav, hover_color=self.config.card_hi,
                                          compound="top", command=lambda: self.on_nav_click(self.home_button, self.home.main))
         self.home_button.grid(row=1, column=0, padx=10)
 
         self.quest_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Quests",
-                                          font=self.config.page_font,
-                                          text_color=self.config.primary_text, image=self.quest_button_image,
-                                          fg_color=self.config.sidebar_color, hover_color=self.config.navhover_color,
+                                          font=self.config.body_font,
+                                          text_color=self.config.text, image=self.quest_button_image,
+                                          fg_color=self.config.nav, hover_color=self.config.card_hi,
                                           compound="top", command=lambda: self.on_nav_click(self.quest_button, self.quest.main))
         self.quest_button.grid(row=2, column=0, padx=10)
 
         self.habit_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Habits",
-                                          font=self.config.page_font,
-                                          text_color=self.config.primary_text, image=self.habit_button_image,
-                                          fg_color=self.config.sidebar_color, hover_color=self.config.navhover_color,
+                                          font=self.config.body_font,
+                                          text_color=self.config.text, image=self.habit_button_image,
+                                          fg_color=self.config.nav, hover_color=self.config.card_hi,
                                           compound="top", command=lambda: self.on_nav_click(self.habit_button, self.habit.main))
         self.habit_button.grid(row=3, column=0, padx=10)
 
         self.forge_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Forge",
-                                          font=self.config.page_font,
-                                          text_color=self.config.primary_text, image=self.forge_button_image,
-                                          fg_color=self.config.sidebar_color, hover_color=self.config.navhover_color,
+                                          font=self.config.body_font,
+                                          text_color=self.config.text, image=self.forge_button_image,
+                                          fg_color=self.config.nav, hover_color=self.config.card_hi,
                                           compound="top", command=lambda: self.on_nav_click(self.forge_button, self.forge.main))
         self.forge_button.grid(row=4, column=0, padx=10)
 
         self.shop_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Shop",
-                                          font=self.config.page_font,
-                                          text_color=self.config.primary_text, image=self.shop_button_image,
-                                          fg_color=self.config.sidebar_color, hover_color=self.config.navhover_color,
+                                          font=self.config.body_font,
+                                          text_color=self.config.text, image=self.shop_button_image,
+                                          fg_color=self.config.nav, hover_color=self.config.card_hi,
                                           compound="top", command=lambda: self.on_nav_click(self.shop_button, self.shop.main))
         self.shop_button.grid(row=5, column=0, padx=10)
 
         self.settings_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Settings",
-                                             font=self.config.page_font,
-                                             text_color=self.config.primary_text, image=self.settings_button_image,
-                                             fg_color=self.config.sidebar_color, hover_color=self.config.navhover_color,
+                                             font=self.config.body_font,
+                                             text_color=self.config.text, image=self.settings_button_image,
+                                             fg_color=self.config.nav, hover_color=self.config.card_hi,
                                              compound="top", command=lambda: self.on_nav_click(self.settings_button, self.settings.main))
         self.settings_button.grid(row=6, column=0, padx=10)
 
@@ -146,8 +146,8 @@ class SetupNavbar:
 
     def select_nav_button(self, button):
         for nav_button in self.nav_buttons:
-            nav_button.configure(fg_color=self.config.sidebar_color, text_color=self.config.primary_text)
+            nav_button.configure(fg_color=self.config.nav, text_color=self.config.text)
 
-        button.configure(fg_color=self.config.nav_tab_color, text_color=self.config.amber)
+        button.configure(fg_color=self.config.card, text_color=self.config.gold)
         self.active_button = button
 
