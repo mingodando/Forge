@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from tkinter import Canvas
+from PIL import Image, ImageDraw, ImageFilter, ImageTk
 
 from backend.config import Config
 from pages.home_page import get_home
@@ -13,6 +14,8 @@ class FocusCard:
         self.canvas = None
         self.zero_label = None
         self.focus_label = None
+        self.ring_image = None
+        self.perk_label = None
 
     def main(self):
         pass
@@ -20,9 +23,31 @@ class FocusCard:
         self.canvas = Canvas(self.home_page.focus_frame, width=150, height=150, bg=self.config.nav_tab_color, highlightthickness=0)
         self.canvas.grid(row=0, column=0, rowspan=5, padx=20, pady=20, sticky="nsew")
 
-        self.canvas.create_oval(10, 10, 140, 140, outline=self.config.well_color, width=16, fill="")
+        self.ring_image = self.render_glow_ring()
+        self.canvas.create_image(75, 75, image=self.ring_image)
 
-        self.canvas.create_arc(10, 10, 140, 140, start=90, extent=270, outline=self.config.faint_text, width=16, style="arc")
+        self.canvas.create_text(75, 63, text="25:00", fill=self.config.primary_text, font=self.config.levelup_font)
+        self.canvas.create_text(75, 88, text="READY", fill=self.config.muted_text, font=self.config.page_font)
+
+    @staticmethod
+    def render_glow_ring():
+        scale = 4
+        size = 150 * scale
+        center = size // 2
+        img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(img)
+
+        halo_radius = 62 * scale
+        draw.ellipse((center - halo_radius, center - halo_radius, center + halo_radius, center + halo_radius), fill="#3d2c1c")
+        img = img.filter(ImageFilter.GaussianBlur(radius=3 * scale))
+
+        disc_radius = 40 * scale
+        draw = ImageDraw.Draw(img)
+        draw.ellipse((center - disc_radius, center - disc_radius, center + disc_radius, center + disc_radius), fill="#161009")
+        img = img.filter(ImageFilter.GaussianBlur(radius=0.5 * scale))
+
+        img = img.resize((150, 150), Image.Resampling.LANCZOS)
+        return ImageTk.PhotoImage(img)
 
     def create_onboard(self):
         self.zero_label = ctk.CTkLabel(self.home_page.focus_frame, width=160, height=10, text="ZERO-FRICTION START",
