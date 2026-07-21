@@ -5,6 +5,11 @@ from PIL import Image, ImageDraw, ImageFilter, ImageTk
 from backend.config import Config
 from pages.home_page import get_home
 
+RING_SIZE = 180
+HALO_FRACTION = 62 / 150
+DISC_FRACTION = 40 / 150
+
+
 class FocusCard:
     def __init__(self):
         self.config = Config()
@@ -19,34 +24,38 @@ class FocusCard:
 
     def main(self):
         pass
+
     def create_ring(self):
-        self.canvas = Canvas(self.home_page.focus_frame, width=150, height=150, bg=self.config.nav_tab_color, highlightthickness=0)
-        self.canvas.grid(row=0, column=0, rowspan=5, padx=20, pady=20, sticky="nsew")
-
-        self.ring_image = self.render_glow_ring()
-        self.canvas.create_image(75, 75, image=self.ring_image)
-
-        self.canvas.create_text(75, 63, text="25:00", fill=self.config.primary_text, font=self.config.levelup_font)
-        self.canvas.create_text(75, 88, text="READY", fill=self.config.muted_text, font=self.config.page_font)
-
-    @staticmethod
-    def render_glow_ring():
-        scale = 4
-        size = 150 * scale
+        size = RING_SIZE
         center = size // 2
-        img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+
+        self.canvas = Canvas(self.home_page.focus_frame, width=size, height=size, bg=self.config.nav_tab_color, highlightthickness=0)
+        self.canvas.grid(row=0, column=0, rowspan=5, padx=20, pady=10, sticky="nsew")
+
+        self.ring_image = self.render_glow_ring(size)
+        self.canvas.create_image(center, center, image=self.ring_image)
+
+        self.canvas.create_text(center, center - 12, text="25:00", fill=self.config.primary_text, font=self.config.levelup_font)
+        self.canvas.create_text(center, center + 13, text="READY", fill=self.config.muted_text, font=self.config.page_font)
+
+    @classmethod
+    def render_glow_ring(cls, size):
+        scale = 4
+        px = size * scale
+        center = px // 2
+        img = Image.new("RGBA", (px, px), (0, 0, 0, 0))
         draw = ImageDraw.Draw(img)
 
-        halo_radius = 62 * scale
+        halo_radius = int(px * HALO_FRACTION)
         draw.ellipse((center - halo_radius, center - halo_radius, center + halo_radius, center + halo_radius), fill="#3d2c1c")
         img = img.filter(ImageFilter.GaussianBlur(radius=3 * scale))
 
-        disc_radius = 40 * scale
+        disc_radius = int(px * DISC_FRACTION)
         draw = ImageDraw.Draw(img)
         draw.ellipse((center - disc_radius, center - disc_radius, center + disc_radius, center + disc_radius), fill="#161009")
         img = img.filter(ImageFilter.GaussianBlur(radius=0.5 * scale))
 
-        img = img.resize((150, 150), Image.Resampling.LANCZOS)
+        img = img.resize((size, size), Image.Resampling.LANCZOS)
         return ImageTk.PhotoImage(img)
 
     def create_onboard(self):
@@ -62,3 +71,5 @@ class FocusCard:
         "Finish a session and it auto-rolls XP,\n coins & materials — the fastest way to make studying pay.",
                                        font=self.config.page_font, text_color=self.config.primary_text)
         self.perk_label.grid(row=2, column=1, sticky="n")
+
+          
