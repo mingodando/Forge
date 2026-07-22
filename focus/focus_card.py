@@ -9,7 +9,6 @@ RING_SIZE = 180
 HALO_FRACTION = 62 / 150
 DISC_FRACTION = 40 / 150
 
-
 class FocusCard:
     def __init__(self):
         self.config = Config()
@@ -61,15 +60,21 @@ class FocusCard:
     def create_onboard(self):
         self.zero_label = ctk.CTkLabel(self.home_page.focus_frame, width=160, height=10, text="ZERO-FRICTION START",
                                        font=self.config.label_font, text_color=self.config.ember, fg_color=self.config.card)
-        self.zero_label.grid(row=0, column=1, pady=(15,0), sticky="new")
+        self.zero_label.grid(row=0, column=1, pady=(15,0), sticky="nw")
 
         self.focus_label = ctk.CTkLabel(self.home_page.focus_frame, width=160, height=30, text="Focus Session",
                                         font=self.config.heading_font, text_color=self.config.text)
-        self.focus_label.grid(row=1, column=1, sticky="n")
+        self.focus_label.grid(row=1, column=1, sticky="nw")
 
         self.perk_label = ctk.CTkLabel(self.home_page.focus_frame, width=160, height=30, text="One tap and the forge fires. "
         "Finish a session and it auto-rolls XP,\n coins & materials — the fastest way to make studying pay.",
                                        font=self.config.body_font, text_color=self.config.text)
         self.perk_label.grid(row=2, column=1, sticky="n")
 
-          
+        self.start_button = ctk.CTkButton(self.home_page.focus_frame, text="▶  Start 25 min", font=self.config.button_font,
+                                          fg_color=self.config.ember, hover_color="#d97a2e", text_color="#1a1006",
+                                          corner_radius=12, width=160, height=40, command=self.start_focus_session)
+        self.start_button.grid(row=3, column=1, pady=(10, 0), sticky="nw")
+
+    def start_focus_session(self):
+        pass

@@ -18,6 +18,7 @@ class Config:
         self.heading_font = None
         self.label_font = None
         self.body_font = None
+        self.button_font = None
 
         #--- Surface Color ---#
         self.bg = None
@@ -42,6 +43,7 @@ class Config:
         self.heading_font = ctk.CTkFont("Space Grotesk", 22, "bold")
         self.label_font = ctk.CTkFont("Space Grotesk", 15, "bold")
         self.body_font = ctk.CTkFont("Space Grotesk", 13, "bold")
+        self.button_font = ctk.CTkFont("Space Grotesk", 15, "bold")
 
         #--- Surface Color ---#
         self.bg = "#14100c"
