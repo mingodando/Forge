@@ -27,6 +27,7 @@ class FocusCard:
         self.perk_label = None
         self.time_text = None
         self.status_text = None
+        self.reset_button = None
         self.session_minutes = SESSION_MINUTES
         self.remaining_seconds = SESSION_MINUTES * 60
         self.timer_job = None
@@ -88,6 +89,12 @@ class FocusCard:
         self.start_button.grid(row=3, column=1, pady=(10, 0), sticky="nw")
         self.start_button.bind("<MouseWheel>", self.adjust_session_time)
 
+        self.reset_button = ctk.CTkButton(self.home_page.focus_frame, text="Reset", font=self.config.button_font,
+                                          fg_color="transparent", hover_color=self.config.card_hi,
+                                          border_width=2, border_color=self.config.ember, text_color=self.config.ember,
+                                          corner_radius=12, width=100, height=40, command=self.reset_focus_session)
+        self.reset_button.grid(row=3, column=1, padx=(170, 0), pady=(10, 0), sticky="nw")
+
     def adjust_session_time(self, event):
         if self.session_active:
             return
@@ -122,6 +129,18 @@ class FocusCard:
 
         self.remaining_seconds -= 1
         self.timer_job = self.canvas.after(1000, self.tick)
+
+    def reset_focus_session(self):
+        if self.timer_job is not None:
+            self.canvas.after_cancel(self.timer_job)
+            self.timer_job = None
+
+        self.session_active = False
+        self.remaining_seconds = self.session_minutes * 60
+
+        self.canvas.itemconfig(self.time_text, text=f"{self.session_minutes:02d}:00")
+        self.canvas.itemconfig(self.status_text, text="READY")
+        self.start_button.configure(text=f"▶  Start {self.session_minutes} min", command=self.start_focus_session)
 
     def finish_focus_session(self):
         self.session_active = False
