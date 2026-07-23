@@ -1,3 +1,5 @@
+import winsound
+
 import customtkinter as ctk
 from tkinter import Canvas
 from PIL import Image, ImageDraw, ImageFilter, ImageTk
@@ -148,3 +150,18 @@ class FocusCard:
         self.start_button.configure(text=f"▶  Start {self.session_minutes} min", command=self.start_focus_session)
         self.remaining_seconds = self.session_minutes * 60
         self.timer_job = None
+        self.announce_completion()
+
+    def announce_completion(self):
+        winsound.PlaySound("SystemAsterisk", winsound.SND_ALIAS | winsound.SND_ASYNC)
+        self.pulse_status_text(3)
+
+    def pulse_status_text(self, pulses_left):
+        if pulses_left <= 0:
+            self.canvas.itemconfig(self.status_text, fill=self.config.muted)
+            return
+
+        current_fill = self.canvas.itemcget(self.status_text, "fill")
+        next_fill = self.config.ember if current_fill != self.config.ember else self.config.muted
+        self.canvas.itemconfig(self.status_text, fill=next_fill)
+        self.canvas.after(300, lambda: self.pulse_status_text(pulses_left - 1))
