@@ -9,6 +9,9 @@ RING_SIZE = 180
 HALO_FRACTION = 62 / 150
 DISC_FRACTION = 40 / 150
 SESSION_MINUTES = 25
+MIN_SESSION_MINUTES = 5
+MAX_SESSION_MINUTES = 120
+TIME_STEP_MINUTES = 5
 
 class FocusCard:
     def __init__(self):
@@ -20,11 +23,14 @@ class FocusCard:
         self.zero_label = None
         self.focus_label = None
         self.ring_image = None
+        self.start_button = None
         self.perk_label = None
         self.time_text = None
         self.status_text = None
+        self.session_minutes = SESSION_MINUTES
         self.remaining_seconds = SESSION_MINUTES * 60
         self.timer_job = None
+        self.session_active = False
 
     def main(self):
         pass
@@ -80,8 +86,21 @@ class FocusCard:
                                           fg_color=self.config.ember, hover_color="#d97a2e", text_color="#1a1006",
                                           corner_radius=12, width=160, height=40, command=self.start_focus_session)
         self.start_button.grid(row=3, column=1, pady=(10, 0), sticky="nw")
+        self.start_button.bind("<MouseWheel>", self.adjust_session_time)
+
+    def adjust_session_time(self, event):
+        if self.session_active:
+            return
+
+        step = TIME_STEP_MINUTES if event.delta > 0 else -TIME_STEP_MINUTES
+        self.session_minutes = max(MIN_SESSION_MINUTES, min(MAX_SESSION_MINUTES, self.session_minutes + step))
+        self.remaining_seconds = self.session_minutes * 60
+
+        self.canvas.itemconfig(self.time_text, text=f"{self.session_minutes:02d}:00")
+        self.start_button.configure(text=f"▶  Start {self.session_minutes} min")
 
     def start_focus_session(self):
+        self.session_active = True
         self.canvas.itemconfig(self.status_text, text="FOCUSING")
         self.start_button.configure(text="⏸  Pause", command=self.pause_focus_session)
         self.tick()
@@ -105,7 +124,8 @@ class FocusCard:
         self.timer_job = self.canvas.after(1000, self.tick)
 
     def finish_focus_session(self):
+        self.session_active = False
         self.canvas.itemconfig(self.status_text, text="DONE")
-        self.start_button.configure(text="▶  Start 25 min", command=self.start_focus_session)
-        self.remaining_seconds = SESSION_MINUTES * 60
+        self.start_button.configure(text=f"▶  Start {self.session_minutes} min", command=self.start_focus_session)
+        self.remaining_seconds = self.session_minutes * 60
         self.timer_job = None
