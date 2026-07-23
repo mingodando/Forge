@@ -8,6 +8,7 @@ from pages.home_page import get_home
 RING_SIZE = 180
 HALO_FRACTION = 62 / 150
 DISC_FRACTION = 40 / 150
+SESSION_MINUTES = 25
 
 class FocusCard:
     def __init__(self):
@@ -20,6 +21,10 @@ class FocusCard:
         self.focus_label = None
         self.ring_image = None
         self.perk_label = None
+        self.time_text = None
+        self.status_text = None
+        self.remaining_seconds = SESSION_MINUTES * 60
+        self.timer_job = None
 
     def main(self):
         pass
@@ -34,8 +39,8 @@ class FocusCard:
         self.ring_image = self.render_glow_ring(size)
         self.canvas.create_image(center, center, image=self.ring_image)
 
-        self.canvas.create_text(center, center - 12, text="25:00", fill=self.config.text, font=self.config.heading_font)
-        self.canvas.create_text(center, center + 13, text="READY", fill=self.config.muted, font=self.config.body_font)
+        self.time_text = self.canvas.create_text(center, center - 12, text="25:00", fill=self.config.text, font=self.config.heading_font)
+        self.status_text = self.canvas.create_text(center, center + 13, text="READY", fill=self.config.muted, font=self.config.body_font)
 
     @classmethod
     def render_glow_ring(cls, size):
@@ -77,4 +82,30 @@ class FocusCard:
         self.start_button.grid(row=3, column=1, pady=(10, 0), sticky="nw")
 
     def start_focus_session(self):
-        pass
+        self.canvas.itemconfig(self.status_text, text="FOCUSING")
+        self.start_button.configure(text="⏸  Pause", command=self.pause_focus_session)
+        self.tick()
+
+    def pause_focus_session(self):
+        self.canvas.itemconfig(self.status_text, text="PAUSED")
+        self.start_button.configure(text="▶  Resume", command=self.start_focus_session)
+        if self.timer_job is not None:
+            self.canvas.after_cancel(self.timer_job)
+            self.timer_job = None
+
+    def tick(self):
+        minutes, seconds = divmod(self.remaining_seconds, 60)
+        self.canvas.itemconfig(self.time_text, text=f"{minutes:02d}:{seconds:02d}")
+
+        if self.remaining_seconds <= 0:
+            self.finish_focus_session()
+            return
+
+        self.remaining_seconds -= 1
+        self.timer_job = self.canvas.after(1000, self.tick)
+
+    def finish_focus_session(self):
+        self.canvas.itemconfig(self.status_text, text="DONE")
+        self.start_button.configure(text="▶  Start 25 min", command=self.start_focus_session)
+        self.remaining_seconds = SESSION_MINUTES * 60
+        self.timer_job = None
