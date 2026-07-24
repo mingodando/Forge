@@ -13,7 +13,9 @@ class Setup:
 
         self.current_directory = None
         self.data_file_name = None
-        self.file_path = None
+        self.data_path = None
+        self.focus_path = None
+        self.focus_file_name = None
 
         self.root = None
         self.topbar = None
@@ -49,15 +51,24 @@ class Setup:
 
         self.data_file_name = "../save.json"
 
-        self.file_path = os.path.join(current_directory, self.data_file_name)
+        self.data_path = os.path.join(current_directory, self.data_file_name)
 
-        if not os.path.exists(self.file_path):
-            with open(self.file_path, "w", encoding="utf-8") as f:
+        if not os.path.exists(self.data_path):
+            with open(self.data_path, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=4)
             print(f"Successfully created the file: {self.data_file_name}")
         else:
             print(f"File already exists")
 
+        self.focus_file_name = "focus.txt"
+        self.focus_path = os.path.join(self.directory.focus_directory(), self.focus_file_name)
+
+        if not os.path.exists(self.focus_path):
+            with open(self.focus_path, "w", encoding="utf-8") as f:
+                json.dump([], f, indent=4)
+            print(f"Successfully created the file: {self.focus_file_name}")
+        else:
+            print(f"File already exists")
 
 _setup_instance = None
 

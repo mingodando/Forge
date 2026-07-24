@@ -8,6 +8,7 @@ class Directory:
         self._images_directory = None
         self._home_directory = None
         self._pages_directory = None
+        self._focus_directory = None
         self._balance_file = None
         self._history_file = None
 
@@ -40,3 +41,7 @@ class Directory:
     def pages_directory(self):
         self._pages_directory = os.path.join(self._main_directory, "pages")
         return self._pages_directory
+
+    def focus_directory(self):
+        self._focus_directory = os.path.join(self._main_directory, "focus")
+        return self._focus_directory
