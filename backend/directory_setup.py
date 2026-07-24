@@ -11,6 +11,7 @@ class Directory:
         self._focus_directory = None
         self._balance_file = None
         self._history_file = None
+        self._focus_file = None
 
     def main(self):
         return self._main_directory
@@ -45,3 +46,7 @@ class Directory:
     def focus_directory(self):
         self._focus_directory = os.path.join(self._main_directory, "focus")
         return self._focus_directory
+
+    def focus_file(self):
+        self._focus_file = os.path.join(self.focus_directory(), "focus.txt")
+        return self._focus_file

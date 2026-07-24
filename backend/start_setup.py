@@ -61,11 +61,11 @@ class Setup:
             print(f"File already exists")
 
         self.focus_file_name = "focus.txt"
-        self.focus_path = os.path.join(self.directory.focus_directory(), self.focus_file_name)
+        self.focus_path = self.directory.focus_file()
 
         if not os.path.exists(self.focus_path):
             with open(self.focus_path, "w", encoding="utf-8") as f:
-                json.dump([], f, indent=4)
+                pass
             print(f"Successfully created the file: {self.focus_file_name}")
         else:
             print(f"File already exists")

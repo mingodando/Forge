@@ -5,6 +5,7 @@ from tkinter import Canvas
 from PIL import Image, ImageDraw, ImageFilter, ImageTk
 
 from backend.config import Config
+from focus.focus import Focus
 from pages.home_page import get_home
 
 RING_SIZE = 180
@@ -20,6 +21,7 @@ class FocusCard:
         self.config = Config()
         self.config.main()
         self.home_page = get_home()
+        self.focus_log = Focus()
 
         self.canvas = None
         self.zero_label = None
@@ -30,6 +32,9 @@ class FocusCard:
         self.time_text = None
         self.status_text = None
         self.reset_button = None
+        self.focused_today_label = None
+        self.focus_minutes_label = None
+        self.focus_sessions_label = None
         self.session_minutes = SESSION_MINUTES
         self.remaining_seconds = SESSION_MINUTES * 60
         self.timer_job = None
@@ -148,9 +153,11 @@ class FocusCard:
         self.session_active = False
         self.canvas.itemconfig(self.status_text, text="DONE")
         self.start_button.configure(text=f"▶  Start {self.session_minutes} min", command=self.start_focus_session)
+        self.focus_log.log_session(self.session_minutes)
         self.remaining_seconds = self.session_minutes * 60
         self.timer_job = None
         self.announce_completion()
+        self.refresh_focus_today()
 
     def announce_completion(self):
         winsound.PlaySound("SystemAsterisk", winsound.SND_ALIAS | winsound.SND_ASYNC)
@@ -165,3 +172,26 @@ class FocusCard:
         next_fill = self.config.ember if current_fill != self.config.ember else self.config.muted
         self.canvas.itemconfig(self.status_text, fill=next_fill)
         self.canvas.after(300, lambda: self.pulse_status_text(pulses_left - 1))
+
+    #--- Daily Focus ---#
+    def focus_today(self):
+        self.home_page.focus_frame.grid_columnconfigure(2, weight=1)
+
+        self.focused_today_label = ctk.CTkLabel(self.home_page.focus_frame, text="FOCUSED TODAY", font=self.config.body_font, text_color=self.config.muted)
+        self.focused_today_label.grid(row=0, column=2, padx=(0, 30), pady=(15, 0), sticky="ne")
+
+        self.focus_minutes_label = ctk.CTkLabel(self.home_page.focus_frame, font=self.config.heading_font, text_color=self.config.gold)
+        self.focus_minutes_label.grid(row=1, column=2, padx=(0, 30), sticky="ne")
+
+        self.focus_sessions_label = ctk.CTkLabel(self.home_page.focus_frame, font=self.config.body_font, text_color=self.config.muted)
+        self.focus_sessions_label.grid(row=2, column=2, padx=(0, 30), sticky="ne")
+
+        self.refresh_focus_today()
+
+    def refresh_focus_today(self):
+        stats = self.focus_log.get_today_focus()
+        minutes = stats["minutes"]
+        sessions = stats["sessions"]
+
+        self.focus_minutes_label.configure(text=f"{minutes // 60}h {minutes % 60}m" if minutes >= 60 else f"{minutes}m")
+        self.focus_sessions_label.configure(text=f"{sessions} session" + ("s" if sessions != 1 else ""))

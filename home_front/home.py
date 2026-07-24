@@ -55,3 +55,4 @@ class HomePage:
     def focus_session(self):
         self.focus.create_ring()
         self.focus.create_onboard()
+        self.focus.focus_today()
