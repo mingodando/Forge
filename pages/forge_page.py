@@ -1,5 +1,15 @@
+import customtkinter as ctk
+
 from backend.config import Config
 from backend.start_setup import get_setup
+
+_forge_instance = None
+
+def get_forge():
+    global _forge_instance
+    if _forge_instance is None:
+        _forge_instance = Forge()
+    return _forge_instance
 
 class Forge:
     def __init__(self):
@@ -7,5 +17,12 @@ class Forge:
         self.config.main()
         self.setup = get_setup()
 
+        self.frame = None
+
     def main(self):
-        pass
+        self.frame = ctk.CTkFrame(self.setup.content_frame, width=1120, height=680, fg_color=self.config.bg, corner_radius=0)
+        self.frame.grid(row=0, column=0, sticky="nsew")
+        self.frame.grid_propagate(False)
+
+        placeholder = ctk.CTkLabel(self.frame, text="Forge", font=self.config.heading_font, text_color=self.config.text)
+        placeholder.grid(row=0, column=0, padx=35, pady=35, sticky="nw")

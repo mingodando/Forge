@@ -21,6 +21,7 @@ class Home:
         self.level_label = None
 
         #--- Frames ---#
+        self.frame = None
         self.focus_frame = None
         self.xpbar_frame = None
         self.coins_frame = None
@@ -38,13 +39,17 @@ class Home:
         self.quests_completed_label = None
 
     def main(self):
-        self.focus_frame = ctk.CTkFrame(self.setup.content_frame, width=1050, height=200, fg_color=self.config.card, corner_radius=30)
+        self.frame = ctk.CTkFrame(self.setup.content_frame, width=1120, height=680, fg_color=self.config.bg, corner_radius=0)
+        self.frame.grid(row=0, column=0, sticky="nsew")
+        self.frame.grid_propagate(False)
+
+        self.focus_frame = ctk.CTkFrame(self.frame, width=1050, height=200, fg_color=self.config.card, corner_radius=30)
         self.focus_frame.grid(row=0, column=0, padx=35, sticky="nsew")
 
-        self.xpbar_frame = ctk.CTkFrame(self.setup.content_frame, width=1050, height=50, fg_color=self.config.card, corner_radius=30)
+        self.xpbar_frame = ctk.CTkFrame(self.frame, width=1050, height=50, fg_color=self.config.card, corner_radius=30)
         self.xpbar_frame.grid(row=1, column=0, padx=35, pady=20, sticky="nsew")
 
-        self.four_frames = ctk.CTkFrame(self.setup.content_frame, width=1050, height=150, fg_color=self.config.bg, corner_radius=30)
+        self.four_frames = ctk.CTkFrame(self.frame, width=1050, height=150, fg_color=self.config.bg, corner_radius=30)
         self.four_frames.grid(row=2, column=0, padx=35, sticky="nsew")
 
         self.four_frames.grid_propagate(False)

@@ -3,11 +3,11 @@ import customtkinter as ctk
 from backend.config import Config
 from backend.start_setup import get_setup
 from pages.home_page import get_home
-from pages.quest_page import Quest
-from pages.habit_page import Habit
-from pages.forge_page import Forge
-from pages.shop_page import Shop
-from pages.settings_page import Settings
+from pages.quest_page import get_quest
+from pages.habit_page import get_habit
+from pages.forge_page import get_forge
+from pages.shop_page import get_shop
+from pages.settings_page import get_settings
 from home_back.clock import Time
 from home_back.setup_navbar import SetupNavbar
 from home_front.home import HomePage
@@ -25,11 +25,11 @@ class App:
         self.config = Config()
         self.setupnavbar = SetupNavbar()
         self.home_page = get_home()
-        self.quest_page = Quest()
-        self.habit_page = Habit()
-        self.forge_page = Forge()
-        self.shop_page = Shop()
-        self.settings_page = Settings()
+        self.quest_page = get_quest()
+        self.habit_page = get_habit()
+        self.forge_page = get_forge()
+        self.shop_page = get_shop()
+        self.settings_page = get_settings()
         self.time = Time()
         self.home_front = HomePage()
         self.config.main()
@@ -64,11 +64,19 @@ class App:
 
         self.setup.create_home_page(self.root)
         self.setup.navbar.columnconfigure(0, weight=1)
-        self.setupnavbar.setup_navbar()
         self.setup_topbar()
         self.setup_app()
+
         self.home_page.main()
         self.home_front.main()
+        self.quest_page.main()
+        self.habit_page.main()
+        self.forge_page.main()
+        self.shop_page.main()
+        self.settings_page.main()
+
+        self.setupnavbar.setup_navbar()
+        self.home_page.frame.tkraise()
 
         self.root.mainloop()
 

@@ -6,24 +6,24 @@ from backend.config import Config
 from backend.directory_setup import Directory
 
 
-from pages.home_page import Home
-from pages.quest_page import Quest
-from pages.habit_page import Habit
-from pages.forge_page import Forge
-from pages.settings_page import Settings
-from pages.shop_page import Shop
+from pages.home_page import get_home
+from pages.quest_page import get_quest
+from pages.habit_page import get_habit
+from pages.forge_page import get_forge
+from pages.settings_page import get_settings
+from pages.shop_page import get_shop
 
 class SetupNavbar:
     def __init__(self):
         self.config = Config()
         self.config.main()
         self.setup = get_setup()
-        self.home = Home()
-        self.quest = Quest()
-        self.habit = Habit()
-        self.forge = Forge()
-        self.shop = Shop()
-        self.settings = Settings()
+        self.home = get_home()
+        self.quest = get_quest()
+        self.habit = get_habit()
+        self.forge = get_forge()
+        self.shop = get_shop()
+        self.settings = get_settings()
         self.directory = Directory()
 
         self.current_directory = None
@@ -98,51 +98,51 @@ class SetupNavbar:
         self.home_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Home", font=self.config.body_font,
                                          text_color=self.config.text, image=self.home_button_image,
                                          fg_color=self.config.nav, hover_color=self.config.card_hi,
-                                         compound="top", command=lambda: self.on_nav_click(self.home_button, self.home.main))
+                                         compound="top", command=lambda: self.on_nav_click(self.home_button, self.home.frame))
         self.home_button.grid(row=1, column=0, padx=10)
 
         self.quest_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Quests",
                                           font=self.config.body_font,
                                           text_color=self.config.text, image=self.quest_button_image,
                                           fg_color=self.config.nav, hover_color=self.config.card_hi,
-                                          compound="top", command=lambda: self.on_nav_click(self.quest_button, self.quest.main))
+                                          compound="top", command=lambda: self.on_nav_click(self.quest_button, self.quest.frame))
         self.quest_button.grid(row=2, column=0, padx=10)
 
         self.habit_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Habits",
                                           font=self.config.body_font,
                                           text_color=self.config.text, image=self.habit_button_image,
                                           fg_color=self.config.nav, hover_color=self.config.card_hi,
-                                          compound="top", command=lambda: self.on_nav_click(self.habit_button, self.habit.main))
+                                          compound="top", command=lambda: self.on_nav_click(self.habit_button, self.habit.frame))
         self.habit_button.grid(row=3, column=0, padx=10)
 
         self.forge_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Forge",
                                           font=self.config.body_font,
                                           text_color=self.config.text, image=self.forge_button_image,
                                           fg_color=self.config.nav, hover_color=self.config.card_hi,
-                                          compound="top", command=lambda: self.on_nav_click(self.forge_button, self.forge.main))
+                                          compound="top", command=lambda: self.on_nav_click(self.forge_button, self.forge.frame))
         self.forge_button.grid(row=4, column=0, padx=10)
 
         self.shop_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Shop",
                                           font=self.config.body_font,
                                           text_color=self.config.text, image=self.shop_button_image,
                                           fg_color=self.config.nav, hover_color=self.config.card_hi,
-                                          compound="top", command=lambda: self.on_nav_click(self.shop_button, self.shop.main))
+                                          compound="top", command=lambda: self.on_nav_click(self.shop_button, self.shop.frame))
         self.shop_button.grid(row=5, column=0, padx=10)
 
         self.settings_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Settings",
                                              font=self.config.body_font,
                                              text_color=self.config.text, image=self.settings_button_image,
                                              fg_color=self.config.nav, hover_color=self.config.card_hi,
-                                             compound="top", command=lambda: self.on_nav_click(self.settings_button, self.settings.main))
+                                             compound="top", command=lambda: self.on_nav_click(self.settings_button, self.settings.frame))
         self.settings_button.grid(row=6, column=0, padx=10)
 
         self.nav_buttons = [self.home_button, self.quest_button, self.habit_button,
                              self.forge_button, self.shop_button, self.settings_button]
         self.select_nav_button(self.home_button)
 
-    def on_nav_click(self, button, page_main):
+    def on_nav_click(self, button, frame):
         self.select_nav_button(button)
-        page_main()
+        frame.tkraise()
 
     def select_nav_button(self, button):
         for nav_button in self.nav_buttons:
