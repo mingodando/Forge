@@ -12,6 +12,7 @@ class Directory:
         self._balance_file = None
         self._history_file = None
         self._focus_file = None
+        self._reward_state_file = None
 
     def main(self):
         return self._main_directory
@@ -50,3 +51,7 @@ class Directory:
     def focus_file(self):
         self._focus_file = os.path.join(self.focus_directory(), "focus.txt")
         return self._focus_file
+
+    def reward_state_file(self):
+        self._reward_state_file = os.path.join(self.focus_directory(), "reward_state.txt")
+        return self._reward_state_file
