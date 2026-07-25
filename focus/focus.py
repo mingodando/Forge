@@ -15,8 +15,8 @@ class Focus:
     def log_session(self, minutes):
         path = self.directory.focus_file()
         timestamp = datetime.datetime.now().isoformat()
-        with open(path, "a") as f:
-            f.write(f"At: {timestamp}, Focused For: {minutes}\n")
+        with open(path, "a") as file:
+            file.write(f"At: {timestamp}, Focused For: {minutes}\n")
 
     def get_today_focus(self):
         path = self.directory.focus_file()
