@@ -4,7 +4,6 @@ import os
 from backend.directory_setup import Directory
 from currency.currency import Currency
 
-
 class Focus:
     def __init__(self):
         self.directory = Directory()
@@ -25,12 +24,14 @@ class Focus:
         minutes = 0
         sessions = 0
         if os.path.exists(path):
-            with open(path, "r") as f:
-                for line in f:
+            with open(path, "r") as file:
+                for line in file:
                     line = line.strip()
                     if not line:
                         continue
-                    timestamp_str, minutes_str = line.split(",")
+                    timestamp_part, minutes_part = line.split(", ")
+                    timestamp_str = timestamp_part.removeprefix("At: ")
+                    minutes_str = minutes_part.removeprefix("Focused For: ")
                     entry_date = datetime.datetime.fromisoformat(timestamp_str).date()
                     if entry_date == today:
                         minutes += int(minutes_str)
