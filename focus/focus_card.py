@@ -156,6 +156,7 @@ class FocusCard:
         self.focus_log.log_session(self.session_minutes)
         self.remaining_seconds = self.session_minutes * 60
         self.timer_job = None
+        self.focus_log.rewards()
         self.announce_completion()
         self.refresh_focus_today()
 

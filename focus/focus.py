@@ -2,10 +2,13 @@ import datetime
 import os
 
 from backend.directory_setup import Directory
+from currency.currency import Currency
+
 
 class Focus:
     def __init__(self):
         self.directory = Directory()
+        self.currency = Currency()
 
     def main(self):
         pass
@@ -33,6 +36,18 @@ class Focus:
                         minutes += int(minutes_str)
                         sessions += 1
         return {"minutes": minutes, "sessions": sessions}
+
+    # --- Rewards ---#
+    def rewards(self):
+        minutes = self.get_today_focus()["minutes"]
+        if minutes > 120:
+            self.currency.currency_change(90)
+        elif minutes > 90:
+            self.currency.currency_change(60)
+        elif minutes > 60:
+            self.currency.currency_change(30)
+        elif minutes > 30:
+            self.currency.currency_change(15)
 
 
 if __name__ == "__main__":
