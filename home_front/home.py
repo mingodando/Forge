@@ -4,6 +4,7 @@ from backend.config import Config
 from currency.currency import Currency
 from focus.focus_card import FocusCard
 from pages.home_page import get_home
+from backend.start_setup import get_setup
 
 class HomePage:
     def __init__(self):
@@ -11,6 +12,7 @@ class HomePage:
         self.config.main()
         self.currency = Currency()
         self.focus = FocusCard()
+        self.setup = get_setup()
         self.home = get_home()
 
         #--- Widgets ---#
@@ -20,6 +22,8 @@ class HomePage:
         self.streak_label = None
         self.gear_bonus_label = None
         self.quests_completed_label = None
+        self.onboard_display1 = None
+        self.onboard_display2 = None
 
     def main(self):
         self.coin_frame()
@@ -56,3 +60,13 @@ class HomePage:
         self.focus.create_ring()
         self.focus.create_onboard()
         self.focus.focus_today()
+
+    def setup_topbar(self):
+        self.setup.topbar.columnconfigure(0, weight=1)
+        self.setup.topbar.rowconfigure(1, weight=1)
+
+        self.onboard_display1 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_date(), font=self.config.body_font, text_color=self.config.muted)
+        self.onboard_display1.grid(row=0, column=0, padx=20, pady=(10,0), sticky="w")
+
+        self.onboard_display2 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_time(), font=self.config.heading_font, text_color=self.config.text)
+        self.onboard_display2.grid(row=1, column=0, padx=20, sticky="wn")

@@ -24,5 +24,7 @@ class Quest:
         self.frame.grid(row=0, column=0, sticky="nsew")
         self.frame.grid_propagate(False)
 
+        self.topbar_frame = ctk.CTkFrame(self.frame, )
+
         placeholder = ctk.CTkLabel(self.frame, text="Quests", font=self.config.heading_font, text_color=self.config.text)
         placeholder.grid(row=0, column=0, padx=35, pady=35, sticky="nw")

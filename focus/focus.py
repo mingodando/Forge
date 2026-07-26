@@ -45,12 +45,16 @@ class Focus:
 
         if minutes > 120:
             reward_amount = 90
+            messagebox.showinfo("Rewarded", "You got 90 coins")
         elif minutes > 90:
             reward_amount = 60
+            messagebox.showinfo("Rewarded", "You got 60 coins")
         elif minutes > 60:
             reward_amount = 30
+            messagebox.showinfo("Rewarded", "You got 30 coins")
         elif minutes > 30:
             reward_amount = 15
+            messagebox.showinfo("Rewarded", "You got 15 coins")
         else:
             reward_amount = 0
 
