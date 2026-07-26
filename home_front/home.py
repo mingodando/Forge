@@ -47,6 +47,10 @@ class HomePage:
         self.coin_change_display = ctk.CTkLabel(self.home.coins_frame, text=change_text, font=self.config.label_font, text_color=change_color)
         self.coin_change_display.grid(row=2, column=0, padx=25, pady=(0, 10), sticky="w")
 
+        # Shared with FocusCard (holds the same Home singleton) so it can refresh the coin display live.
+        self.home.coin_display = self.coin_display
+        self.home.coin_change_display = self.coin_change_display
+
         self.streak_label = ctk.CTkLabel(self.home.streak_frame, text="BEST STREAK", font=self.config.label_font, text_color=self.config.muted)
         self.streak_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")
 

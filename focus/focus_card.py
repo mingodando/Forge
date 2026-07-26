@@ -157,8 +157,26 @@ class FocusCard:
         self.remaining_seconds = self.session_minutes * 60
         self.timer_job = None
         self.focus_log.rewards()
+        self.refresh_coins()
         self.announce_completion()
         self.refresh_focus_today()
+
+    def refresh_coins(self):
+        coin_display = self.home_page.coin_display
+        coin_change_display = self.home_page.coin_change_display
+        if coin_display is None or coin_change_display is None:
+            return
+
+        coin_display.configure(text=str(self.focus_log.currency.get_currencies()))
+
+        net = self.focus_log.currency.get_today_flow()["net"]
+        if net > 0:
+            change_text, change_color = f"+{net} today", self.config.green
+        elif net < 0:
+            change_text, change_color = f"{net} today", self.config.red
+        else:
+            change_text, change_color = "0 today", self.config.muted
+        coin_change_display.configure(text=change_text, text_color=change_color)
 
     def announce_completion(self):
         winsound.PlaySound("SystemAsterisk", winsound.SND_ALIAS | winsound.SND_ASYNC)
