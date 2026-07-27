@@ -85,6 +85,5 @@ class HomePage:
 
         coin_icon = ctk.CTkLabel(coin_badge, text="●", font=ctk.CTkFont("Space Grotesk", 24), text_color=self.config.gold)
         coin_icon.grid(row=0, column=0, padx=(18, 8), pady=8, sticky="e")
-
         coin_display = ctk.CTkLabel(coin_badge, text=str(self.currency.get_currencies()), font=ctk.CTkFont("Space Grotesk", 24, "bold"), text_color=self.config.text)
         coin_display.grid(row=0, column=1, padx=(0, 18), pady=8, sticky="w")
