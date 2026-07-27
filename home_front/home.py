@@ -76,3 +76,15 @@ class HomePage:
 
         self.onboard_display2 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_time(), font=self.config.heading_font, text_color=self.config.text)
         self.onboard_display2.grid(row=1, column=0, padx=20, sticky="wn")
+
+        coin_badge = ctk.CTkFrame(self.setup.topbar, fg_color=self.config.bg, corner_radius=20, height=40)
+        coin_badge.grid(row=0, column=3, rowspan=2, padx=(20, 30), pady=10, sticky="e")
+        coin_badge.grid_propagate(False)
+        coin_badge.columnconfigure(0, weight=1)
+        coin_badge.rowconfigure(0, weight=1)
+
+        coin_icon = ctk.CTkLabel(coin_badge, text="●", font=ctk.CTkFont("Space Grotesk", 24), text_color=self.config.gold)
+        coin_icon.grid(row=0, column=0, padx=(18, 8), pady=8, sticky="e")
+
+        coin_display = ctk.CTkLabel(coin_badge, text=str(self.currency.get_currencies()), font=ctk.CTkFont("Space Grotesk", 24, "bold"), text_color=self.config.text)
+        coin_display.grid(row=0, column=1, padx=(0, 18), pady=8, sticky="w")
