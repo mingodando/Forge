@@ -64,7 +64,7 @@ class App:
 
         self.setup.create_home_page(self.root)
         self.setup.navbar.columnconfigure(0, weight=1)
-        self.setup_topbar()
+        self.home_front.setup_topbar()
         self.setup_app()
 
         self.home_page.main()

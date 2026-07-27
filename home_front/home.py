@@ -5,6 +5,7 @@ from currency.currency import Currency
 from focus.focus_card import FocusCard
 from pages.home_page import get_home
 from backend.start_setup import get_setup
+from home_back.clock import Time
 
 class HomePage:
     def __init__(self):
@@ -12,6 +13,7 @@ class HomePage:
         self.config.main()
         self.currency = Currency()
         self.focus = FocusCard()
+        self.time = Time()
         self.setup = get_setup()
         self.home = get_home()
 
