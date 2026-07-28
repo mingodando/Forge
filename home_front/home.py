@@ -27,6 +27,9 @@ class HomePage:
         self.onboard_display1 = None
         self.onboard_display2 = None
 
+        #--- Topbar ---#
+        self.home_topbar = None
+
     def main(self):
         self.coin_frame()
         self.focus_session()
@@ -69,15 +72,19 @@ class HomePage:
 
     def setup_topbar(self):
         self.setup.topbar.columnconfigure(0, weight=1)
-        self.setup.topbar.rowconfigure(1, weight=1)
+        self.setup.topbar.rowconfigure(0, weight=1)
 
-        self.onboard_display1 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_date(), font=self.config.body_font, text_color=self.config.muted)
+        self.home_topbar = ctk.CTkFrame(self.setup.topbar, fg_color=self.config.bg)
+        self.home_topbar.grid(row=0, column=0, sticky="nsew")
+        self.home_topbar.columnconfigure(0, weight=1)
+
+        self.onboard_display1 = ctk.CTkLabel(self.home_topbar, text=self.time.print_date(), font=self.config.body_font, text_color=self.config.muted)
         self.onboard_display1.grid(row=0, column=0, padx=20, pady=(10,0), sticky="w")
 
-        self.onboard_display2 = ctk.CTkLabel(self.setup.topbar, text=self.time.print_time(), font=self.config.heading_font, text_color=self.config.text)
+        self.onboard_display2 = ctk.CTkLabel(self.home_topbar, text=self.time.print_time(), font=self.config.heading_font, text_color=self.config.text)
         self.onboard_display2.grid(row=1, column=0, padx=20, sticky="wn")
 
-        coin_badge = ctk.CTkFrame(self.setup.topbar, fg_color=self.config.bg, corner_radius=20, height=40)
+        coin_badge = ctk.CTkFrame(self.home_topbar, fg_color=self.config.bg, corner_radius=20, height=40)
         coin_badge.grid(row=0, column=3, rowspan=2, padx=(20, 30), pady=10, sticky="e")
         coin_badge.grid_propagate(False)
         coin_badge.columnconfigure(0, weight=1)

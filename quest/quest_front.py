@@ -14,4 +14,4 @@ class QuestFront:
 
     def quest_topbar(self):
         self.quest_label = ctk.CTkLabel(self.quest_page.frame, text="Quests", font=self.config.body_font, text_color=self.config.muted)
-        self.quest_label.grid(row=0, column=0, )
+        self.quest_label.grid(row=0, column=0)

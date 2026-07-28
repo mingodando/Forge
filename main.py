@@ -75,8 +75,8 @@ class App:
         self.shop_page.main()
         self.settings_page.main()
 
+        self.setupnavbar.register_topbar(self.home_page.frame, self.home_front.home_topbar)
         self.setupnavbar.setup_navbar()
-        self.home_page.frame.tkraise()
 
         self.root.mainloop()
 

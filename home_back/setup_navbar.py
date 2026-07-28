@@ -55,6 +55,9 @@ class SetupNavbar:
         self.nav_buttons = []
         self.active_button = None
 
+        self.topbar_by_frame = {}
+        self.active_topbar = None
+
     def setup_navbar_images(self):
         self.current_directory = self.directory.images_directory()
         self.logo_raw_image = Image.open(rf"{self.current_directory}\logo.jpg")
@@ -138,11 +141,22 @@ class SetupNavbar:
 
         self.nav_buttons = [self.home_button, self.quest_button, self.habit_button,
                              self.forge_button, self.shop_button, self.settings_button]
-        self.select_nav_button(self.home_button)
+        self.on_nav_click(self.home_button, self.home.frame)
+
+    def register_topbar(self, frame, topbar_frame):
+        self.topbar_by_frame[frame] = topbar_frame
 
     def on_nav_click(self, button, frame):
         self.select_nav_button(button)
         frame.tkraise()
+
+        topbar_frame = self.topbar_by_frame.get(frame)
+        if topbar_frame is not self.active_topbar:
+            if self.active_topbar is not None:
+                self.active_topbar.grid_remove()
+            if topbar_frame is not None:
+                topbar_frame.grid()
+            self.active_topbar = topbar_frame
 
     def select_nav_button(self, button):
         for nav_button in self.nav_buttons:
