@@ -11,6 +11,7 @@ from pages.settings_page import get_settings
 from home_back.clock import Time
 from home_back.setup_navbar import SetupNavbar
 from home_front.home import HomePage
+from quest.quest_front import QuestFront
 
 class App:
     def __init__(self):
@@ -32,6 +33,7 @@ class App:
         self.settings_page = get_settings()
         self.time = Time()
         self.home_front = HomePage()
+        self.quest_front = QuestFront()
         self.config.main()
 
         #--- Topbar Widgets ---#
@@ -75,7 +77,10 @@ class App:
         self.shop_page.main()
         self.settings_page.main()
 
+        self.quest_front.setup_topbar()
+
         self.setupnavbar.register_topbar(self.home_page.frame, self.home_front.home_topbar)
+        self.setupnavbar.register_topbar(self.quest_page.frame, self.quest_front.quest_topbar)
         self.setupnavbar.setup_navbar()
 
         self.root.mainloop()
