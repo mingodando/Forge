@@ -145,6 +145,7 @@ class SetupNavbar:
 
     def register_topbar(self, frame, topbar_frame):
         self.topbar_by_frame[frame] = topbar_frame
+        topbar_frame.grid_remove()
 
     def on_nav_click(self, button, frame):
         self.select_nav_button(button)
