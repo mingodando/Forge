@@ -47,3 +47,13 @@ class QuestFront:
         self.new_quest_button.grid(row=0, column=2, rowspan=2, padx=(0, 30), pady=15, sticky="e")
 
         self.quest_page.topbar_frame.grid_columnconfigure(1, weight=1)
+
+
+
+_quest_front_instance = None
+
+def get_quest_front():
+    global _quest_front_instance
+    if _quest_front_instance is None:
+        _quest_front_instance = QuestFront()
+    return _quest_front_instance
