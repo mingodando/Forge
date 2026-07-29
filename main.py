@@ -80,7 +80,7 @@ class App:
         self.quest_front.setup_topbar()
 
         self.setupnavbar.register_topbar(self.home_page.frame, self.home_front.home_topbar)
-        self.setupnavbar.register_topbar(self.quest_page.frame, self.quest_front.quest_topbar)
+        self.setupnavbar.register_topbar(self.quest_page.frame, self.quest_page.topbar_frame)
         self.setupnavbar.setup_navbar()
 
         self.root.mainloop()
