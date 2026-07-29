@@ -74,8 +74,10 @@ class QuestFront:
         self.popup.grid_columnconfigure(0, weight=1)
 
         self.popup.update()
+        # noinspection PyUnresolvedReferences
         hwnd = ctypes.windll.user32.GetParent(self.popup.winfo_id())
         dark_mode = ctypes.c_int(1)
+        # noinspection PyUnresolvedReferences
         ctypes.windll.dwmapi.DwmSetWindowAttribute(hwnd, 20, ctypes.byref(dark_mode), ctypes.sizeof(dark_mode))
 
         ctk.CTkLabel(self.popup, text="NAME", font=self.config.body_font, text_color=self.config.muted).grid(row=0, column=0, padx=20, pady=(20, 0), sticky="w")
