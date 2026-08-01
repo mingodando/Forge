@@ -1,6 +1,8 @@
 import customtkinter as ctk
 import ctypes
 
+from PIL.DdsImagePlugin import DXGI_FORMAT_R8G8B8A8_UNORM
+
 from backend.config import Config
 from backend.start_setup import get_setup
 from pages.quest_page import get_quest
@@ -29,6 +31,9 @@ class QuestFront:
         self.popup = None
         self.category_buttons = []
         self.selected_category = None
+        self.difficulty_frame = None
+        self.difficulty_buttons = []
+        self.selected_difficulty = None
 
     def main(self):
         pass
@@ -60,9 +65,18 @@ class QuestFront:
         self.selected_category = cat
         for btn_cat, btn in self.category_buttons:
             if btn_cat == cat:
-                btn.configure(fg_color=self.config.ember, border_color=self.config.ember, text_color=self.config.nav)
+                btn.configure(fg_color=self.config.ember, border_color=self.config.ember, text_color="white")
             else:
                 btn.configure(fg_color=self.config.card_hi, border_color=self.config.card_hi, text_color=self.config.text)
+
+    def select_difficulty(self, dog):
+        self.selected_difficulty = dog
+        for btn_dog, btn in self.difficulty_buttons:
+            if btn_dog == dog:
+                btn.configure(fg_color=self.config.ember, border_color=self.config.ember, text_color="white")
+            else:
+                btn.configure(fg_color=self.config.card_hi, border_color=self.config.card_hi, text_color=self.config.text)
+
 
     def create_quest(self):
         self.popup = ctk.CTkToplevel(self.quest_page.frame)
@@ -98,6 +112,18 @@ class QuestFront:
             self.category_frame.grid_columnconfigure(i, weight=1)
             self.category_buttons.append((cat, btn))
 
+        ctk.CTkLabel(self.popup, text="DIFFICULTY", font=self.config.body_font, text_color=self.config.muted).grid(row=4, column=0, padx=20, pady=(0, 5), sticky="w")
+        self.difficulty_frame = ctk.CTkFrame(self.popup, fg_color="transparent")
+        self.difficulty_frame.grid(row=5, column=0, padx=20, pady=(0,15), sticky="ew")
+
+        self.difficulty_buttons = []
+        for i, dog in enumerate(["Easy", "Medium", "Hard"]):
+            btn = ctk.CTkButton(self.difficulty_frame, text=dog, font=self.config.body_font,
+                                fg_color=self.config.card_hi, text_color=self.config.text, hover_color=self.config.card,
+                                border_width=2, border_color=self.config.card_hi, corner_radius=8, command=lambda d=dog: self.select_difficulty(d))
+            btn.grid(row=0, column=i, padx=(0, 4) if i < 3 else 0, sticky="ew")
+            self.difficulty_frame.grid_columnconfigure(i, weight=1)
+            self.difficulty_buttons.append((dog, btn))
 
 _quest_front_instance = None
 
