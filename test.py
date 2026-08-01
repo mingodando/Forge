@@ -1,33 +1,33 @@
-import customtkinter
+import os
 
-# Set up the appearance mode and theme
-customtkinter.set_appearance_mode("dark")
-customtkinter.set_default_color_theme("blue")
+from backend.directory_setup import Directory
+from currency import currency
 
-# Initialize the main application window
-app = customtkinter.CTk()
-app.title("CustomTkinter Checklist Example")
-app.geometry("400x300")
+directory = Directory()
+current_directory = directory.quest_file()
 
-# Define a function to execute when the checkbox is toggled
-def checkbox_event():
-    print("Checkbox state changed to:", check_var.get())
+os.makedirs(current_directory, exist_ok=True)
 
-# 1. Create a variable to store the checkbox state ("on" or "off")
-check_var = customtkinter.StringVar(value="off")
+# for i in range(1,11):
+#     file_name = f"test_{i}.txt"
+#
+#     new_directory = os.path.join(current_directory, file_name)
+#
+#     with open(new_directory, "w") as file:
+#         file.write("hi")
 
-# 2. Instantiate the CTkCheckBox widget
-checkbox = customtkinter.CTkCheckBox(
-    master=app,
-    text="Complete Daily Task",
-    command=checkbox_event,
-    variable=check_var,
-    onvalue="on",
-    offvalue="off"
+files = sorted(
+    os.listdir(current_directory),
+    key=lambda name: int(os.path.splitext(name)[0].removeprefix("test_")),
 )
 
-# 3. Position the checkbox on the window
-checkbox.pack(padx=20, pady=20)
+for index, name in enumerate(files, start=1):
+    old_path = os.path.join(current_directory, name)
+    new_path = os.path.join(current_directory, f"test_{index}.txt")
+    if old_path != new_path:
+        os.rename(old_path, new_path)
 
-# Run the application loop
-app.mainloop()
+numbers = [int(os.path.splitext(fname)[0].removeprefix("test_")) for fname in os.listdir(current_directory)]
+largest_number = max(numbers, default=0)
+
+print(largest_number)
