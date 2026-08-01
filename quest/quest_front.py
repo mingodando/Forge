@@ -32,6 +32,7 @@ class QuestFront:
         self.difficulty_frame = None
         self.difficulty_buttons = []
         self.selected_difficulty = None
+        self.actions_frame = None
 
     def main(self):
         pass
@@ -122,6 +123,21 @@ class QuestFront:
             btn.grid(row=0, column=i, padx=(0, 4) if i < 3 else 0, sticky="ew")
             self.difficulty_frame.grid_columnconfigure(i, weight=1)
             self.difficulty_buttons.append((dog, btn))
+
+        self.actions_frame = ctk.CTkFrame(self.popup, fg_color="transparent")
+        self.actions_frame.grid(row=6, column=0, padx=20, pady=(10, 20), sticky="ew")
+        self.actions_frame.grid_columnconfigure(0, weight=1)
+        self.actions_frame.grid_columnconfigure(1, weight=2)
+
+        ctk.CTkButton(self.actions_frame, text="Cancel", font=self.config.button_font,
+                      fg_color="transparent", hover_color=self.config.card_hi,
+                      text_color=self.config.ember, border_width=2, border_color=self.config.ember,
+                      corner_radius=20, command=lambda: self.popup.destroy()).grid(row=0, column=0, padx=(0, 8), sticky="ew")
+
+        ctk.CTkButton(self.actions_frame, text="Create quest", font=self.config.button_font,
+                      fg_color=self.config.ember, hover_color=self.config.gold,
+                      text_color=self.config.nav, corner_radius=20,
+                      command=lambda: self.quest_page.create_quest_file(name=self.name_entry.get(), category=self.selected_category, difficulty=self.selected_difficulty)).grid(row=0, column=1, sticky="ew")
 
 _quest_front_instance = None
 
