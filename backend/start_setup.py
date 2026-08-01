@@ -70,6 +70,11 @@ class Setup:
         else:
             print(f"File already exists")
 
+        if os.path.isdir(self.directory.quest_file()):
+            print(f"{self.directory.quest_file()} already exists")
+        else:
+            os.mkdir(self.directory.quest_file())
+
 _setup_instance = None
 
 def get_setup():

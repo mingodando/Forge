@@ -1,8 +1,6 @@
 import customtkinter as ctk
 import ctypes
 
-from PIL.DdsImagePlugin import DXGI_FORMAT_R8G8B8A8_UNORM
-
 from backend.config import Config
 from backend.start_setup import get_setup
 from pages.quest_page import get_quest

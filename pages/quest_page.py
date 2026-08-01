@@ -1,3 +1,4 @@
+import os
 import customtkinter as ctk
 
 from backend.config import Config
@@ -27,3 +28,6 @@ class Quest:
 
         self.topbar_frame = ctk.CTkFrame(self.setup.topbar, width=1120, height=680, fg_color=self.config.bg)
         self.topbar_frame.grid(row=0, column=0, sticky="nsew")
+
+    def create_quest_file(self):
+        pass #TODO Continue here

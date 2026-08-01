@@ -13,6 +13,8 @@ class Directory:
         self._history_file = None
         self._focus_file = None
         self._reward_state_file = None
+        self._quest_directory = None
+        self.quest_folder = None
 
     def main(self):
         return self._main_directory
@@ -55,3 +57,9 @@ class Directory:
     def reward_state_file(self):
         self._reward_state_file = os.path.join(self.focus_directory(), "reward_state.txt")
         return self._reward_state_file
+    def quest_directory(self):
+        self._quest_directory = os.path.join(self._main_directory, "quest")
+        return self._quest_directory
+    def quest_file(self):
+        self._quest_folder = os.path.join(self.quest_directory(), "quests")
+        return self._quest_folder
