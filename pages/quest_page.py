@@ -71,4 +71,3 @@ class Quest:
 
         with open(os.path.join(current_directory, file_name), "w") as f:
             json.dump(quest_data, f, indent=4)
-            print("YAY")
