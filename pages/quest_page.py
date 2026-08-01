@@ -33,8 +33,6 @@ class Quest:
         self.topbar_frame = ctk.CTkFrame(self.setup.topbar, width=1120, height=680, fg_color=self.config.bg)
         self.topbar_frame.grid(row=0, column=0, sticky="nsew")
 
-        self.create_quest_file(name="Sample Quest", category="General", difficulty="Easy")
-
     def update_quest_folder(self):
         current_directory = self.directory.quest_file()
 
