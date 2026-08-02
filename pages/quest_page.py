@@ -2,6 +2,7 @@ import json
 import os
 import re
 import customtkinter as ctk
+from tkinter import messagebox
 
 from backend.config import Config
 from backend.start_setup import get_setup
@@ -71,3 +72,4 @@ class Quest:
 
         with open(os.path.join(current_directory, file_name), "w") as f:
             json.dump(quest_data, f, indent=4)
+            messagebox.showinfo("Quest Created", "Your quest has been created successfully!")

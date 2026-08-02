@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import ctypes
+from tkinter import messagebox
 
 from backend.config import Config
 from backend.start_setup import get_setup
@@ -76,6 +77,17 @@ class QuestFront:
             else:
                 btn.configure(fg_color=self.config.card_hi, border_color=self.config.card_hi, text_color=self.config.text)
 
+    def create_quest_check(self):
+        if not self.name_entry.get().strip():
+            messagebox.showinfo("Missing info", "Please enter a name!")
+            return False
+        if self.selected_category is None:
+            messagebox.showinfo("Missing info", "Please pick a category!")
+            return False
+        if self.selected_difficulty is None:
+            messagebox.showinfo("Missing info", "Please pick a difficulty!")
+            return False
+        return True
 
     def create_quest(self):
         self.popup = ctk.CTkToplevel(self.quest_page.frame)
@@ -137,7 +149,13 @@ class QuestFront:
         ctk.CTkButton(self.actions_frame, text="Create quest", font=self.config.button_font,
                       fg_color=self.config.ember, hover_color=self.config.gold,
                       text_color=self.config.nav, corner_radius=20,
-                      command=lambda: self.quest_page.create_quest_file(name=self.name_entry.get(), category=self.selected_category, difficulty=self.selected_difficulty)).grid(row=0, column=1, sticky="ew")
+                      command=self.on_create_quest_click).grid(row=0, column=1, sticky="ew")
+
+    def on_create_quest_click(self):
+        if not self.create_quest_check():
+            return
+        self.quest_page.create_quest_file(name=self.name_entry.get(), category=self.selected_category, difficulty=self.selected_difficulty)
+        self.popup.destroy()
 
 _quest_front_instance = None
 
