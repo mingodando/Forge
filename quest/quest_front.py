@@ -92,7 +92,7 @@ class QuestFront:
     def create_quest(self):
         self.popup = ctk.CTkToplevel(self.quest_page.frame)
         self.popup.title("New Quest")
-        self.popup.geometry("420x460")
+        self.popup.geometry("420x300")
         self.popup.configure(fg_color=self.config.card)
         self.popup.transient(self.quest_page.frame.winfo_toplevel())
         self.popup.grab_set()
