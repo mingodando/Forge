@@ -61,7 +61,7 @@ class Quest:
 
         target_num = self.file_largest_num() + 1
 
-        file_name = f"test_{target_num}.json"
+        file_name = f"data_{target_num}.json"
 
         quest_data = {
             "name": name,
