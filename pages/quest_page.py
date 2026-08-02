@@ -38,12 +38,12 @@ class Quest:
 
         files = sorted(
             os.listdir(current_directory),
-            key=lambda fname: int(os.path.splitext(fname)[0].removeprefix("test_")),
+            key=lambda fname: int(os.path.splitext(fname)[0].removeprefix("data_")),
         )
 
         for index, fname in enumerate(files, start=1):
             old_path = os.path.join(current_directory, fname)
-            new_path = os.path.join(current_directory, f"test_{index}.json")
+            new_path = os.path.join(current_directory, f"data_{index}.json")
             if old_path != new_path:
                 os.rename(old_path, new_path)
 
