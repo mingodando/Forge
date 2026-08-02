@@ -5,6 +5,9 @@ from tkinter import messagebox
 from backend.config import Config
 from backend.start_setup import get_setup
 from pages.quest_page import get_quest
+from quest.quest_back import QuestBack
+
+DIFFICULTY_COLOR_KEY = {"easy": "green", "medium": "gold", "hard": "red"}
 
 class QuestFront:
     def __init__(self):
@@ -12,9 +15,11 @@ class QuestFront:
         self.config.main()
         self.setup = get_setup()
         self.quest_page = get_quest()
+        self.quest_back = QuestBack()
+        self.strike_font = ctk.CTkFont("Space Grotesk", 15, "bold", overstrike=True)
 
-        self.slots_used = 2
-        self.max_slots = 5
+        self.slots_used = 0
+        self.max_slots = self.quest_back.get_max_quests()
 
         #--- Topbar ---#
         self.title_label = None
@@ -34,6 +39,11 @@ class QuestFront:
         self.difficulty_buttons = []
         self.selected_difficulty = None
         self.actions_frame = None
+
+        #--- Quest List ---#
+        self.list_frame = None
+        self.footer_label = None
+        self.quest_cards = []
 
     def main(self):
         pass
@@ -154,8 +164,129 @@ class QuestFront:
     def on_create_quest_click(self):
         if not self.create_quest_check():
             return
-        self.quest_page.create_quest_file(name=self.name_entry.get(), category=self.selected_category, difficulty=self.selected_difficulty)
+        if self.slots_used >= self.max_slots:
+            messagebox.showinfo("Quest slots full", "Finish or delete a quest to free up a slot.")
+            return
+        self.quest_back.create_quest_file(name=self.name_entry.get(), category=self.selected_category, difficulty=self.selected_difficulty)
         self.popup.destroy()
+        self.render_quest_cards()
+
+    #--- Quest List ---#
+    def setup_quest_list(self):
+        self.list_frame = ctk.CTkScrollableFrame(self.quest_page.frame, fg_color="transparent")
+        self.list_frame.grid(row=0, column=0, padx=20, pady=(20, 0), sticky="nsew")
+        self.list_frame.grid_columnconfigure(0, weight=1)
+
+        self.quest_page.frame.grid_rowconfigure(0, weight=1)
+        self.quest_page.frame.grid_columnconfigure(0, weight=1)
+
+        self.footer_label = ctk.CTkLabel(
+            self.quest_page.frame,
+            text="Quest slots are limited — buy more in the Shop when you hit the cap.",
+            font=self.config.body_font, text_color=self.config.muted,
+        )
+        self.footer_label.grid(row=1, column=0, padx=20, pady=(10, 15), sticky="w")
+
+        self.render_quest_cards()
+
+    def render_quest_cards(self):
+        for card in self.quest_cards:
+            card["frame"].destroy()
+        self.quest_cards = []
+
+        quests = self.quest_back.load_quests()
+        quests.sort(key=lambda quest: quest.get("completed", False))
+
+        for i, quest in enumerate(quests):
+            self.build_quest_card(i, quest)
+
+        self.slots_used = len([quest for quest in quests if not quest.get("completed", False)])
+        self.slots_count_label.configure(text=f"{self.slots_used} / {self.max_slots}")
+        self.footer_label.grid() if self.slots_used >= self.max_slots else self.footer_label.grid_remove()
+        self.new_quest_button.configure(state="disabled" if self.slots_used >= self.max_slots else "normal")
+
+    def build_quest_card(self, row, quest):
+        coins, xp = self.quest_back.calculate_rewards(quest["difficulty"])
+        difficulty_color = getattr(self.config, DIFFICULTY_COLOR_KEY.get(quest["difficulty"].lower(), "muted"))
+        completed = quest.get("completed", False)
+
+        card = ctk.CTkFrame(self.list_frame, fg_color=self.config.card, corner_radius=12)
+        card.grid(row=row, column=0, sticky="ew", pady=(0, 10))
+        card.grid_columnconfigure(1, weight=1)
+
+        checkbox = ctk.CTkCheckBox(
+            card, text="", width=24,
+            fg_color=self.config.green if completed else self.config.ember,
+            hover_color=self.config.gold,
+            border_color=self.config.green if completed else self.config.muted,
+            state="disabled" if completed else "normal",
+            command=lambda: self.on_complete_click(quest["file_name"]),
+        )
+        checkbox.grid(row=0, column=0, rowspan=2, padx=(15, 10), pady=15)
+        if completed:
+            checkbox.select()
+
+        name_label = ctk.CTkLabel(
+            card, text=quest["name"],
+            font=self.strike_font if completed else self.config.label_font,
+            text_color=self.config.muted if completed else self.config.text,
+        )
+        name_label.grid(row=0, column=1, pady=(12, 0), sticky="w")
+
+        tags_frame = ctk.CTkFrame(card, fg_color="transparent")
+        tags_frame.grid(row=1, column=1, pady=(0, 12), sticky="w")
+
+        category_pill = ctk.CTkLabel(
+            tags_frame, text=f"  {quest['category'].upper()}  ", font=self.config.body_font,
+            text_color=self.config.muted, fg_color=self.config.card_hi, corner_radius=6,
+        )
+        category_pill.grid(row=0, column=0, padx=(0, 6), pady=2)
+
+        difficulty_pill = ctk.CTkLabel(
+            tags_frame, text=f"  {quest['difficulty'].upper()}  ", font=self.config.body_font,
+            text_color=self.config.nav, fg_color=difficulty_color, corner_radius=6,
+        )
+        difficulty_pill.grid(row=0, column=1, pady=2)
+
+        reward_label = ctk.CTkLabel(
+            card,
+            text="earned ✓" if completed else f"{coins} \U0001F7E1  ·  +{xp} XP",
+            font=self.config.body_font,
+            text_color=self.config.green if completed else self.config.gold,
+        )
+        reward_label.grid(row=0, column=2, rowspan=2, padx=(10, 10), pady=15, sticky="e")
+
+        delete_button = ctk.CTkButton(
+            card, text="\U0001F5D1", width=28, height=28, font=self.config.body_font,
+            fg_color="transparent", hover_color=self.config.card_hi, text_color=self.config.muted,
+            command=lambda: self.on_delete_click(quest["file_name"]),
+        )
+        delete_button.grid(row=0, column=3, rowspan=2, padx=(0, 15), pady=15)
+
+        self.quest_cards.append({
+            "frame": card, "file_name": quest["file_name"],
+            "checkbox": checkbox, "name_label": name_label, "reward_label": reward_label,
+        })
+
+    def on_complete_click(self, file_name):
+        card = next((c for c in self.quest_cards if c["file_name"] == file_name), None)
+        if card is None:
+            return
+
+        card["checkbox"].select()
+        card["checkbox"].configure(state="disabled", fg_color=self.config.green, border_color=self.config.green)
+        card["name_label"].configure(font=self.strike_font, text_color=self.config.muted)
+        card["reward_label"].configure(text="earned ✓", text_color=self.config.green)
+
+        self.list_frame.after(500, lambda: self.finish_complete(file_name))
+
+    def finish_complete(self, file_name):
+        self.quest_back.complete_quest(file_name)
+        self.render_quest_cards()
+
+    def on_delete_click(self, file_name):
+        self.quest_back.delete_quest(file_name)
+        self.render_quest_cards()
 
 _quest_front_instance = None
 

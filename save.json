@@ -1,9 +1,10 @@
 {
-    "username" :  "Ming",
-    "level" : 0,
-    "xp" : 0,
-    "materials" : 0,
-    "gear" : [],
-    "streaks" : 0,
-    "history" : []
+    "username": "Ming",
+    "level": 0,
+    "xp": 780,
+    "max_quests": 5,
+    "materials": 0,
+    "gear": [],
+    "streaks": 0,
+    "history": []
 }

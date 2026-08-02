@@ -9,7 +9,9 @@ from tkinter import messagebox
 from backend.config import Config
 from currency.currency import Currency
 from backend.directory_setup import Directory
+from pages.quest_page import TIER_LEVEL
 
+XP_MULTIPLIER = 6
 
 
 class QuestBack:
@@ -80,5 +82,69 @@ class QuestBack:
 
         self.update_quest_folder()
 
-    def create_quest_frontend(self):
-        pass
+    def load_quests(self):
+        self.timed_delete_quest()
+        current_directory = self.directory.quest_file()
+        os.makedirs(current_directory, exist_ok=True)
+
+        files = sorted(
+            os.listdir(current_directory),
+            key=lambda fname: int(os.path.splitext(fname)[0].removeprefix("data_")),
+        )
+
+        quests = []
+        for fname in files:
+            with open(os.path.join(current_directory, fname), "r") as f:
+                quest_data = json.load(f)
+            quest_data["file_name"] = fname
+            quests.append(quest_data)
+
+        return quests
+
+    def calculate_rewards(self, difficulty):
+        coins = TIER_LEVEL[difficulty.lower()]
+        xp = coins * XP_MULTIPLIER
+        return coins, xp
+
+    def get_max_quests(self):
+        path = os.path.join(self.directory.main(), "save.json")
+        with open(path, "r") as f:
+            data = json.load(f)
+        return data.get("max_quests", 5)
+
+    def add_xp(self, amount):
+        path = os.path.join(self.directory.main(), "save.json")
+        with open(path, "r") as f:
+            data = json.load(f)
+
+        data["xp"] = data.get("xp", 0) + amount
+
+        with open(path, "w") as f:
+            json.dump(data, f, indent=4)
+
+    def complete_quest(self, file_name):
+        current_directory = self.directory.quest_file()
+        path = os.path.join(current_directory, file_name)
+
+        with open(path, "r") as f:
+            quest_data = json.load(f)
+
+        if quest_data.get("completed"):
+            return 0, 0
+
+        coins, xp = self.calculate_rewards(quest_data["difficulty"])
+        self.currency.currency_change(coins)
+        self.add_xp(xp)
+
+        quest_data["completed"] = True
+        with open(path, "w") as f:
+            json.dump(quest_data, f, indent=4)
+
+        return coins, xp
+
+    def delete_quest(self, file_name):
+        current_directory = self.directory.quest_file()
+        path = os.path.join(current_directory, file_name)
+        if os.path.exists(path):
+            os.remove(path)
+        self.update_quest_folder()

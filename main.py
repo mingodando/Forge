@@ -78,6 +78,7 @@ class App:
         self.settings_page.main()
 
         self.quest_front.setup_topbar()
+        self.quest_front.setup_quest_list()
 
         self.setupnavbar.register_topbar(self.home_page.frame, self.home_front.home_topbar)
         self.setupnavbar.register_topbar(self.quest_page.frame, self.quest_page.topbar_frame)
