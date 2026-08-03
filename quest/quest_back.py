@@ -148,3 +148,12 @@ class QuestBack:
         if os.path.exists(path):
             os.remove(path)
         self.update_quest_folder()
+
+    def get_num_quests(self):
+        quests = self.load_quests()
+        self.slots_used = len([quest for quest in quests if not quest.get("completed", False)])
+        return self.slots_used
+
+    def quest_display(self):
+        line = f"{self.get_num_quests()} quests left today. Streak safe until midnight!"
+        return line
