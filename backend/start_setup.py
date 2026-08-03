@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import os
 import json
+from tkinter import simpledialog
 
 from backend.config import Config
 from backend.directory_setup import Directory
@@ -38,16 +39,37 @@ class Setup:
     def on_click_home(self):
         self.content_frame.tkraise()
 
+    def get_user_name(self):
+        self.username = simpledialog.askstring("Username", "Please enter your username")
+
+        with open("save.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        data["username"] = self.username
+
+        with open("save.json", "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=4)
+
+
+    def check_user_name(self):
+        with open("save.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+            if data["username"] == "":
+                self.get_user_name()
+            else:
+                pass
+
     def setup_files(self):
         current_directory = self.directory.backend_directory()
-        data = [
-            "level",
-            "xp",
-            "materials",
-            "gear",
-            "streaks",
-            "history"
-        ]
+        data = {
+            "username": "",
+            "level": 0,
+            "xp": 0,
+            "materials": 0,
+            "gear": [],
+            "streaks": 0,
+            "history": []
+        }
 
         self.data_file_name = "../save.json"
 

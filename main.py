@@ -66,8 +66,8 @@ class App:
 
         self.setup.create_home_page(self.root)
         self.setup.navbar.columnconfigure(0, weight=1)
-        self.home_front.setup_topbar()
         self.setup_app()
+        self.home_front.setup_topbar()
 
         self.home_page.main()
         self.home_front.main()
@@ -88,6 +88,7 @@ class App:
 
     def setup_app(self):
         self.setup.setup_files()
+        self.setup.check_user_name()
 
 if __name__ == "__main__":
     app = App()
