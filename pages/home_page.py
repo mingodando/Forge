@@ -47,7 +47,7 @@ class Home:
         self.focus_frame.grid(row=0, column=0, padx=35, sticky="nsew")
 
         self.xpbar_frame = ctk.CTkFrame(self.frame, width=1050, height=50, fg_color=self.config.card, corner_radius=30)
-        self.xpbar_frame.grid(row=1, column=0, padx=35, pady=20, sticky="nsew")
+        self.xpbar_frame.grid(row=1, column=0, padx=35, pady=(15,7), sticky="nsew")
 
         self.four_frames = ctk.CTkFrame(self.frame, width=1050, height=150, fg_color=self.config.bg, corner_radius=30)
         self.four_frames.grid(row=2, column=0, padx=35, sticky="nsew")
