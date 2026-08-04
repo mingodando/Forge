@@ -158,4 +158,36 @@ class HomePage:
         self.materials_frame.grid_columnconfigure((0, 1), weight=1)
 
         self.materials_label = ctk.CTkLabel(self.materials_frame, text="MATERIALS", font=self.config.label_font, text_color=self.config.muted)
-        self.materials_label.grid(row=0, column=0, padx=20, pady=(15, 5), sticky="w")
+        self.materials_label.grid(row=0, column=0, columnspan=2, padx=20, pady=(16, 10), sticky="w")
+
+        material_types = [("Wood", self.config.ember), ("Stone", self.config.muted), ("Clay", self.config.gold), ("Iron", self.config.text)]
+        for i, (name, dot_color) in enumerate(material_types):
+            row, col = 1 + i // 2, i % 2
+            item_frame = ctk.CTkFrame(self.materials_frame, fg_color="transparent")
+            item_frame.grid(row=row, column=col, padx=20, pady=(0, 14), sticky="w")
+
+            icon = ctk.CTkFrame(item_frame, width=16, height=16, fg_color=dot_color, corner_radius=5)
+            icon.grid(row=0, column=0, rowspan=2, padx=(0, 9), sticky="w")
+            icon.grid_propagate(False)
+
+            ctk.CTkLabel(item_frame, text=name, font=self.config.body_font, text_color=self.config.muted).grid(row=0, column=1, sticky="w")
+            ctk.CTkLabel(item_frame, text="0", font=self.config.label_font, text_color=self.config.text).grid(row=1, column=1, sticky="w")
+
+        #--- Equipped Gear (placeholder) ---#
+        self.gear_frame = ctk.CTkFrame(self.right_column_frame, fg_color=self.config.card, corner_radius=30)
+        self.gear_frame.grid(row=1, column=0, sticky="nsew")
+        self.gear_frame.grid_columnconfigure(tuple(range(6)), weight=1)
+
+        self.gear_label = ctk.CTkLabel(self.gear_frame, text="EQUIPPED GEAR", font=self.config.label_font, text_color=self.config.muted)
+        self.gear_label.grid(row=0, column=0, columnspan=6, padx=20, pady=(16, 12), sticky="w")
+
+        for slot in range(6):
+            gear_slot = ctk.CTkFrame(self.gear_frame, width=40, height=40, fg_color=self.config.card_hi, corner_radius=12)
+            gear_slot.grid(row=1, column=slot, padx=(20 if slot == 0 else 6, 6), pady=(0, 12), sticky="w")
+            gear_slot.grid_propagate(False)
+            gear_slot.grid_columnconfigure(0, weight=1)
+            gear_slot.grid_rowconfigure(0, weight=1)
+            ctk.CTkLabel(gear_slot, text="+", font=self.config.label_font, text_color=self.config.muted).grid(row=0, column=0)
+
+        self.gear_hint_label = ctk.CTkLabel(self.gear_frame, text="Empty slots · smelt gear in the Forge →", font=self.config.body_font, text_color=self.config.ember)
+        self.gear_hint_label.grid(row=2, column=0, columnspan=6, padx=20, pady=(0, 14), sticky="w")
