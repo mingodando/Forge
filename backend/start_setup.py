@@ -29,7 +29,7 @@ class Setup:
         self.topbar = ctk.CTkFrame(self.root, width=1120, height=120, bg_color=self.config.bg, fg_color=self.config.bg)
         self.topbar.grid(row=0, column=1, sticky="n")
         self.topbar.grid_propagate(False)
-        self.navbar = ctk.CTkFrame(self.root, width=160, height=800, bg_color=self.config.nav, fg_color=self.config.nav)
+        self.navbar = ctk.CTkFrame(self.root, width=160, height=900, bg_color=self.config.nav, fg_color=self.config.nav)
         self.navbar.grid(row=0, column=0, rowspan=2, sticky="ns")
         self.navbar.grid_propagate(False)
         self.content_frame = ctk.CTkFrame(self.root, width=1120, height=780, bg_color=self.config.bg, fg_color=self.config.bg)
