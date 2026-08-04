@@ -117,7 +117,7 @@ class HomePage:
         coin_display.grid(row=0, column=1, padx=(0, 18), pady=8, sticky="w")
 
     def home_setup_quest_list(self):
-        self.bottom_row_frame = ctk.CTkFrame(self.home.frame, width=1050, height=230, fg_color=self.config.bg, corner_radius=0)
+        self.bottom_row_frame = ctk.CTkFrame(self.home.frame, width=1050, height=325, fg_color=self.config.bg, corner_radius=0)
         self.bottom_row_frame.grid(row=3, column=0, padx=35, pady=(20, 0), sticky="nsew")
         self.bottom_row_frame.grid_propagate(False)
         self.bottom_row_frame.grid_columnconfigure(0, weight=0)
