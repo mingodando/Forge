@@ -4,6 +4,7 @@ from tkinter import messagebox
 
 from backend.config import Config
 from backend.start_setup import get_setup
+from pages.home_page import get_home
 from pages.quest_page import get_quest
 from quest.quest_back import QuestBack
 
@@ -15,6 +16,7 @@ class QuestFront:
         self.config.main()
         self.setup = get_setup()
         self.quest_page = get_quest()
+        self.home_page = get_home()
         self.quest_back = QuestBack()
         self.strike_font = ctk.CTkFont("Space Grotesk", 15, "bold", overstrike=True)
 
@@ -310,7 +312,29 @@ class QuestFront:
 
     def finish_complete(self, file_name):
         self.quest_back.complete_quest(file_name)
+        self.refresh_coins()
         self.render_quest_cards()
+
+    def refresh_coins(self):
+        coin_display = self.home_page.coin_display
+        coin_change_display = self.home_page.coin_change_display
+        topbar_coin_display = self.home_page.topbar_coin_display
+        if coin_display is None or coin_change_display is None:
+            return
+
+        balance = str(self.quest_back.currency.get_currencies())
+        coin_display.configure(text=balance)
+        if topbar_coin_display is not None:
+            topbar_coin_display.configure(text=balance)
+
+        net = self.quest_back.currency.get_today_flow()["net"]
+        if net > 0:
+            change_text, change_color = f"+{net} today", self.config.green
+        elif net < 0:
+            change_text, change_color = f"{net} today", self.config.red
+        else:
+            change_text, change_color = "0 today", self.config.muted
+        coin_change_display.configure(text=change_text, text_color=change_color)
 
     def on_delete_click(self, file_name):
         self.quest_back.delete_quest(file_name)

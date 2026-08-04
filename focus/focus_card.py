@@ -164,10 +164,14 @@ class FocusCard:
     def refresh_coins(self):
         coin_display = self.home_page.coin_display
         coin_change_display = self.home_page.coin_change_display
+        topbar_coin_display = self.home_page.topbar_coin_display
         if coin_display is None or coin_change_display is None:
             return
 
-        coin_display.configure(text=str(self.focus_log.currency.get_currencies()))
+        balance = str(self.focus_log.currency.get_currencies())
+        coin_display.configure(text=balance)
+        if topbar_coin_display is not None:
+            topbar_coin_display.configure(text=balance)
 
         net = self.focus_log.currency.get_today_flow()["net"]
         if net > 0:

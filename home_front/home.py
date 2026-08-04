@@ -116,6 +116,9 @@ class HomePage:
         coin_display = ctk.CTkLabel(coin_badge, text=str(self.currency.get_currencies()), font=ctk.CTkFont("Space Grotesk", 24, "bold"), text_color=self.config.text)
         coin_display.grid(row=0, column=1, padx=(0, 18), pady=8, sticky="w")
 
+        # Shared with FocusCard/QuestFront so they can refresh the topbar coin display live.
+        self.home.topbar_coin_display = coin_display
+
     def home_setup_quest_list(self):
         self.bottom_row_frame = ctk.CTkFrame(self.home.frame, width=1050, height=325, fg_color=self.config.bg, corner_radius=0)
         self.bottom_row_frame.grid(row=3, column=0, padx=35, pady=(20, 0), sticky="nsew")

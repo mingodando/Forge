@@ -34,6 +34,7 @@ class Home:
         self.coin_label = None
         self.coin_display = None
         self.coin_change_display = None
+        self.topbar_coin_display = None
         self.streak_label = None
         self.gear_bonus_label = None
         self.quests_completed_label = None

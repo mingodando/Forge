@@ -20,6 +20,8 @@ class QuestBack:
         self.currency = Currency()
         self.directory = Directory()
 
+        self.slots_used = None
+
     def main(self):
         pass
 
@@ -28,8 +30,7 @@ class QuestBack:
 
         files = sorted(
             os.listdir(current_directory),
-            key=lambda fname: int(os.path.splitext(fname)[0].removeprefix("data_")),
-        )
+            key=lambda fname: int(os.path.splitext(fname)[0].removeprefix("data_")), )
 
         for index, fname in enumerate(files, start=1):
             old_path = os.path.join(current_directory, fname)
@@ -101,7 +102,8 @@ class QuestBack:
 
         return quests
 
-    def calculate_rewards(self, difficulty):
+    @staticmethod
+    def calculate_rewards(difficulty):
         coins = TIER_LEVEL[difficulty.lower()]
         xp = coins * XP_MULTIPLIER
         return coins, xp
