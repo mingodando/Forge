@@ -145,11 +145,17 @@ class HomePage:
 
         self.quest_front.setup_home_quest_list(self.list_frame)
 
-        #--- Materials (placeholder) ---#
-        self.materials_frame = ctk.CTkFrame(self.bottom_row_frame, width=materials_width, fg_color=self.config.card, corner_radius=30)
-        self.materials_frame.grid(row=0, column=1, padx=(10, 0), sticky="nsew")
-        self.materials_frame.grid_propagate(False)
-        self.materials_frame.grid_columnconfigure(0, weight=1)
+        #--- Right column: Materials + Equipped Gear (placeholders) ---#
+        self.right_column_frame = ctk.CTkFrame(self.bottom_row_frame, width=materials_width, fg_color=self.config.bg, corner_radius=0)
+        self.right_column_frame.grid(row=0, column=1, padx=(10, 0), sticky="nsew")
+        self.right_column_frame.grid_propagate(False)
+        self.right_column_frame.grid_columnconfigure(0, weight=1)
+        self.right_column_frame.grid_rowconfigure(0, weight=6)
+        self.right_column_frame.grid_rowconfigure(1, weight=5)
+
+        self.materials_frame = ctk.CTkFrame(self.right_column_frame, fg_color=self.config.card, corner_radius=30)
+        self.materials_frame.grid(row=0, column=0, pady=(0, 10), sticky="nsew")
+        self.materials_frame.grid_columnconfigure((0, 1), weight=1)
 
         self.materials_label = ctk.CTkLabel(self.materials_frame, text="MATERIALS", font=self.config.label_font, text_color=self.config.muted)
         self.materials_label.grid(row=0, column=0, padx=20, pady=(15, 5), sticky="w")
