@@ -39,6 +39,9 @@ class HomePage:
         self.list_frame = None
         self.materials_frame = None
         self.materials_label = None
+        self.gear_frame = None
+        self.gear_label = None
+        self.gear_hint_label = None
 
         #--- Topbar ---#
         self.home_topbar = None
