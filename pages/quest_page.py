@@ -33,6 +33,6 @@ class Quest:
         self.frame.grid(row=0, column=0, sticky="nsew")
         self.frame.grid_propagate(False)
 
-        self.topbar_frame = ctk.CTkFrame(self.setup.topbar, width=1120, height=680, fg_color=self.config.bg)
+        self.topbar_frame = ctk.CTkFrame(self.setup.topbar, width=1120, height=780, fg_color=self.config.bg)
         self.topbar_frame.grid(row=0, column=0, sticky="nsew")
 
