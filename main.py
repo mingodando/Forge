@@ -62,7 +62,12 @@ class App:
 #----- Starting Functions -----#
     def main(self):
         self.root.title("Forge")
-        self.root.geometry("1280x800")
+        window_width, window_height = 1280, 900
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        x = (screen_width - window_width) // 2
+        y = (screen_height - window_height) // 2
+        self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
         self.setup.create_home_page(self.root)
         self.setup.navbar.columnconfigure(0, weight=1)
