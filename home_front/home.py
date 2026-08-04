@@ -37,6 +37,7 @@ class HomePage:
         self.section_title_label = None
         self.section_hint_label = None
         self.list_frame = None
+        self.right_column_frame = None
         self.materials_frame = None
         self.materials_label = None
         self.gear_frame = None
