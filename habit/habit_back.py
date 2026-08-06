@@ -7,9 +7,9 @@ from backend.config import Config
 from backend.start_setup import get_setup
 from backend.directory_setup import Directory
 from pages.habit_page import get_habit
-from habit.habit_front import get_habitfront
 
 _habitback_instance = None
+
 def get_habitback():
     global _habitback_instance
     if _habitback_instance is None:
@@ -22,7 +22,6 @@ class HabitBack:
         self.directory = Directory()
         self.setup = get_setup()
         self.habit_page = get_habit()
-        self.habit_front = get_habitfront()
 
     def main(self):
         pass
