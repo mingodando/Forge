@@ -3,8 +3,6 @@ import os
 import re
 from datetime import datetime
 
-import customtkinter as ctk
-
 from tkinter import messagebox
 from backend.config import Config
 from currency.currency import Currency

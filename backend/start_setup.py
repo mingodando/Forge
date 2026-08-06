@@ -97,6 +97,11 @@ class Setup:
         else:
             os.mkdir(self.directory.quest_file())
 
+        if os.path.isdir(self.directory.habit_file()):
+            print(f"{self.directory.habit_file()} already exists")
+        else:
+            os.mkdir(self.directory.habit_file())
+
 _setup_instance = None
 
 def get_setup():

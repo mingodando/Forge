@@ -63,3 +63,9 @@ class Directory:
     def quest_file(self):
         self._quest_folder = os.path.join(self.quest_directory(), "quests")
         return self._quest_folder
+    def habit_directory(self):
+        self._habit_directory = os.path.join(self._main_directory, "habit")
+        return self._habit_directory
+    def habit_file(self):
+        self._habit_file = os.path.join(self.habit_directory(), "habits")
+        return self._habit_file
