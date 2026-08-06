@@ -65,6 +65,8 @@ class Setup:
             "username": "",
             "level": 0,
             "xp": 0,
+            "max_quests": 5,
+            "max_habits": 3,
             "materials": 0,
             "gear": [],
             "streaks": 0,

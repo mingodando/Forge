@@ -18,6 +18,7 @@ class Habit:
         self.setup = get_setup()
 
         self.frame = None
+        self.topbar_frame = None
 
     def main(self):
         self.frame = ctk.CTkFrame(self.setup.content_frame, width=1120, height=780, fg_color=self.config.bg, corner_radius=0)
