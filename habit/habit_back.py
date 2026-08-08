@@ -6,10 +6,15 @@ from tkinter import messagebox
 
 from backend.config import Config
 from backend.start_setup import get_setup
+from currency.currency import Currency
 from backend.directory_setup import Directory
 from pages.habit_page import get_habit
+from pages.quest_page import TIER_LEVEL
+from quest.quest_back import XP_MULTIPLIER
 
 _habitback_instance = None
+
+
 
 def get_habitback():
     global _habitback_instance
@@ -21,11 +26,28 @@ class HabitBack:
     def __init__(self):
         self.config = Config()
         self.directory = Directory()
+        self.currency = Currency()
         self.setup = get_setup()
         self.habit_page = get_habit()
 
     def main(self):
         pass
+
+    @staticmethod
+    def calculate_rewards(difficulty):
+        coins = TIER_LEVEL[difficulty.lower()]
+        xp = coins * XP_MULTIPLIER
+        return coins, xp
+
+    def add_xp(self, amount):
+        path = os.path.join(self.directory.habit_file(), "save.json")
+        with open(path, "r") as f:
+            data = json.load(f)
+
+        data["xp"] = data.get("xp", 0) + amount
+
+        with open(path, "w") as f:
+            json.dump(data, f, indent=4)
 
     def update_habit_folder(self):
         current_directory = self.directory.habit_file()
@@ -76,6 +98,26 @@ class HabitBack:
         with open(os.path.join(current_directory, file_name), "w") as f:
             json.dump(habit_data, f, indent=4)
             messagebox.showinfo("Habit Created", f"Habit '{name}' created successfully!")
+
+    def complete_habit(self, file_name):
+        current_directory = self.directory.habit_file()
+        path = os.path.join(current_directory, file_name)
+
+        with open(path, "r") as f:
+            data = json.load(f)
+
+        if data.get("checked") is False:
+            return 0,0
+
+        coins, xp = self.calculate_rewards(data["difficulty"])
+        self.currency.currency_change(coins)
+        self.add_xp(xp)
+
+        data["checked"] = True
+        with open(path, "w") as f:
+            json.dump(data, f, indent=4)
+
+        return coins, xp
 
     def delete_habit(self, file_name):
         current_directory = self.directory.habit_file()
