@@ -83,6 +83,7 @@ class App:
         self.home_front.main()
         self.habit_page.main()
         self.habit_front.setup_topbar()
+        self.habit_front.setup_habit_list()
         self.forge_page.main()
         self.shop_page.main()
         self.settings_page.main()

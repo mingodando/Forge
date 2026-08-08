@@ -11,6 +11,8 @@ from pages.home_page import get_home
 RING_SIZE = 180
 HALO_FRACTION = 62 / 150
 DISC_FRACTION = 40 / 150
+PROGRESS_FRACTION = 51 / 150
+PROGRESS_WIDTH = 12
 SESSION_MINUTES = 25
 MIN_SESSION_MINUTES = 5
 MAX_SESSION_MINUTES = 120
@@ -27,6 +29,8 @@ class FocusCard:
         self.zero_label = None
         self.focus_label = None
         self.ring_image = None
+        self.progress_image = None
+        self.progress_item = None
         self.start_button = None
         self.perk_label = None
         self.time_text = None
@@ -53,8 +57,35 @@ class FocusCard:
         self.ring_image = self.render_glow_ring(size)
         self.canvas.create_image(center, center, image=self.ring_image)
 
+        self.progress_image = self.render_progress_ring(size, 0.0, self.config.ember)
+        self.progress_item = self.canvas.create_image(center, center, image=self.progress_image)
+
         self.time_text = self.canvas.create_text(center, center - 12, text="25:00", fill=self.config.text, font=self.config.heading_font)
         self.status_text = self.canvas.create_text(center, center + 13, text="READY", fill=self.config.muted, font=self.config.body_font)
+
+    def update_progress_ring(self, progress):
+        progress = max(0.0, min(1.0, progress))
+        self.progress_image = self.render_progress_ring(RING_SIZE, progress, self.config.ember)
+        self.canvas.itemconfig(self.progress_item, image=self.progress_image)
+
+    @classmethod
+    def render_progress_ring(cls, size, progress, color):
+        scale = 4
+        px = size * scale
+        center = px // 2
+        img = Image.new("RGBA", (px, px), (0, 0, 0, 0))
+
+        if progress > 0:
+            draw = ImageDraw.Draw(img)
+            radius = int(px * PROGRESS_FRACTION)
+            width = PROGRESS_WIDTH * scale
+            bbox = (center - radius, center - radius, center + radius, center + radius)
+            start_angle = -90
+            end_angle = start_angle + 360 * progress
+            draw.arc(bbox, start=start_angle, end=end_angle, fill=color, width=width)
+
+        img = img.resize((size, size), Image.Resampling.LANCZOS)
+        return ImageTk.PhotoImage(img)
 
     @classmethod
     def render_glow_ring(cls, size):
@@ -130,6 +161,10 @@ class FocusCard:
         minutes, seconds = divmod(self.remaining_seconds, 60)
         self.canvas.itemconfig(self.time_text, text=f"{minutes:02d}:{seconds:02d}")
 
+        total_seconds = self.session_minutes * 60
+        elapsed = total_seconds - self.remaining_seconds
+        self.update_progress_ring(elapsed / total_seconds)
+
         if self.remaining_seconds <= 0:
             self.finish_focus_session()
             return
@@ -148,6 +183,7 @@ class FocusCard:
         self.canvas.itemconfig(self.time_text, text=f"{self.session_minutes:02d}:00")
         self.canvas.itemconfig(self.status_text, text="READY")
         self.start_button.configure(text=f"▶  Start {self.session_minutes} min", command=self.start_focus_session)
+        self.update_progress_ring(0.0)
 
     def finish_focus_session(self):
         self.session_active = False
