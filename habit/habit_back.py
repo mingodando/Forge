@@ -124,6 +124,7 @@ class HabitBack:
             "checked": False,
             "streak": 0,
             "streak_date": date.today().isoformat(),
+            "last_completed_date": None,
             "shielded": False,
         }
 
@@ -142,7 +143,7 @@ class HabitBack:
             return data
 
         gap = (today - streak_date).days
-        missed_days = gap - 1 if data.get("checked") else gap
+        missed_days = gap - 1 if data.get("last_completed_date") == streak_date_str else gap
 
         if missed_days > 0:
             if missed_days == 1 and data.get("shielded"):
@@ -186,7 +187,14 @@ class HabitBack:
         with open(path, "r") as f:
             data = json.load(f)
 
-        if data.get("checked"):
+        today = date.today().isoformat()
+        if data.get("checked") or data.get("last_completed_date") == today:
+            if not data.get("checked") and data.get("last_completed_date") == today:
+                # Someone hand-edited "checked" back to false after already completing
+                # today; heal the file instead of leaving it in a re-clickable state.
+                data["checked"] = True
+                with open(path, "w") as f:
+                    json.dump(data, f, indent=4)
             return 0, 0
 
         coins, xp = self.calculate_rewards(data["difficulty"])
@@ -195,12 +203,22 @@ class HabitBack:
 
         data["checked"] = True
         data["streak"] = data.get("streak", 0) + 1
-        data["streak_date"] = date.today().isoformat()
+        data["streak_date"] = today
+        data["last_completed_date"] = today
 
         with open(path, "w") as f:
             json.dump(data, f, indent=4)
 
         return coins, xp
+
+    def get_num_habits_left(self):
+        habits = self.load_habits()
+        self.habits_left = len([habit for habit in habits if not habit.get("checked", False)])
+        return self.habits_left
+
+    def habit_display(self):
+        line = f"{self.get_num_habits_left()} habits left today. Streak safe until midnight!"
+        return line
 
     def delete_habit(self, file_name):
         current_directory = self.directory.habit_file()

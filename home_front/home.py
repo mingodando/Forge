@@ -7,6 +7,7 @@ from pages.home_page import get_home
 from backend.start_setup import get_setup
 from quest.quest_back import QuestBack
 from quest.quest_front import get_quest_front
+from habit.habit_back import get_habitback
 from home_back.clock import Time
 
 class HomePage:
@@ -18,6 +19,7 @@ class HomePage:
         self.time = Time()
         self.quest_back = QuestBack()
         self.quest_front = get_quest_front()
+        self.habit_back = get_habitback()
         self.setup = get_setup()
         self.home = get_home()
 
@@ -102,8 +104,11 @@ class HomePage:
         self.onboard_display2 = ctk.CTkLabel(self.home_topbar, text=self.time.print_time(), font=self.config.heading_font, text_color=self.config.text)
         self.onboard_display2.grid(row=1, column=0, padx=20, sticky="wn")
 
-        self.onboard_display3 = ctk.CTkLabel(self.home_topbar, text=self.quest_back.quest_display(), font=ctk.CTkFont("Space Grotesk", 13 ), text_color=self.config.muted)
+        self.onboard_display3 = ctk.CTkLabel(self.home_topbar, text=self.habit_back.habit_display(), font=ctk.CTkFont("Space Grotesk", 13 ), text_color=self.config.muted)
         self.onboard_display3.grid(row=2, column=0, padx=20, pady=(0, 10), sticky="w")
+
+        # Shared with HabitFront so it can refresh this line live when a habit is checked.
+        self.home.topbar_habit_display = self.onboard_display3
 
         coin_badge = ctk.CTkFrame(self.home_topbar, fg_color=self.config.bg, corner_radius=20, height=40)
         coin_badge.grid(row=0, column=3, rowspan=2, padx=(20, 30), pady=10, sticky="e")

@@ -192,6 +192,7 @@ class HabitFront:
             return
         self.habit_back.create_habit_file(name=self.name_entry.get(), category=self.selected_category, difficulty=self.selected_difficulty)
         self.popup.destroy()
+        self.refresh_habit_topbar()
         self.render_habit_cards()
 
     #--- Habit List ---#
@@ -361,7 +362,13 @@ class HabitFront:
     def finish_complete(self, file_name):
         self.habit_back.complete_habit(file_name)
         self.refresh_coins()
+        self.refresh_habit_topbar()
         self.render_habit_cards()
+
+    def refresh_habit_topbar(self):
+        topbar_habit_display = self.home_page.topbar_habit_display
+        if topbar_habit_display is not None:
+            topbar_habit_display.configure(text=self.habit_back.habit_display())
 
     def refresh_coins(self):
         coin_display = self.home_page.coin_display
@@ -386,6 +393,7 @@ class HabitFront:
 
     def on_delete_click(self, file_name):
         self.habit_back.delete_habit(file_name)
+        self.refresh_habit_topbar()
         self.render_habit_cards()
 
     def on_shield_click(self, file_name):
