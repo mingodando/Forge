@@ -27,6 +27,19 @@ class HabitBack:
     def main(self):
         pass
 
+    def update_habit_folder(self):
+        current_directory = self.directory.habit_file()
+
+        files = sorted(
+            os.listdir(current_directory),
+            key=lambda fname: int(os.path.splitext(fname)[0].removeprefix("habit_")))
+
+        for index, fname in enumerate(files, start=1):
+            old_path = os.path.join(current_directory, fname)
+            new_path = os.path.join(current_directory, f"habit_{index}.json")
+            if old_path != new_path:
+                os.rename(old_path, new_path)
+
     def create_habit(self):
         self.popup = ctk.CTkToplevel(self.habit_page.frame)
         self.popup.title("Create New Habit")
@@ -63,3 +76,10 @@ class HabitBack:
         with open(os.path.join(current_directory, file_name), "w") as f:
             json.dump(habit_data, f, indent=4)
             messagebox.showinfo("Habit Created", f"Habit '{name}' created successfully!")
+
+    def delete_habit(self, file_name):
+        current_directory = self.directory.habit_file()
+        path = os.path.join(current_directory, file_name)
+        if os.path.exists(path):
+            os.remove(path)
+        self.update_habit_folder()
