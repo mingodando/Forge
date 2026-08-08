@@ -1,5 +1,6 @@
 import os
 import json
+import re
 import customtkinter as ctk
 from tkinter import messagebox
 
@@ -37,3 +38,28 @@ class HabitBack:
             data = json.load(f)
 
         return data["max_habits"]
+
+    def file_largest_num(self):
+        current_directory = self.directory.habit_file()
+        numbers = [int(re.sub(r"^\D+", "", os.path.splitext(fname)[0])) for fname in os.listdir(current_directory)]
+        largest_number = max(numbers, default=0)
+
+        return largest_number
+    def create_habit_file(self, name, category, difficulty):
+        current_directory = self.directory.habit_file()
+        os.makedirs(current_directory, exist_ok=True)
+
+        target_num = self.file_largest_num()
+
+        file_name = f"habit_{target_num}.json"
+
+        habit_data = {
+            "name": name,
+            "category": category,
+            "difficulty": difficulty,
+            "checked": False,
+        }
+
+        with open(os.path.join(current_directory, file_name), "w") as f:
+            json.dump(habit_data, f, indent=4)
+            messagebox.showinfo("Habit Created", f"Habit '{name}' created successfully!")

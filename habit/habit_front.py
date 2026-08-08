@@ -37,9 +37,9 @@ class HabitFront:
         self.subtitle_label.grid(row=1, column=0, padx=20, pady=(0, 15), sticky="w")
 
         self.slots_frame = ctk.CTkFrame(self.habit_page.topbar_frame, fg_color=self.config.bg)
-        self.slots_frame.grid(row=0, column=1, rowpsan=2, padx=(20,2), pady=15, stick="e")
+        self.slots_frame.grid(row=0, column=1, rowspan=2, padx=(20,2), pady=15, sticky="e")
 
-        self.slots_count_label = ctk.CTkLabel(self.slots_frame, text=f"{self.slots_used}/{self.habit_back.get_max_habits()} slots used", font=self.config.body_font, text_color=self.config.gold)
+        self.slots_count_label = ctk.CTkLabel(self.slots_frame, text=f"/{self.habit_back.get_max_habits()} slots used", font=self.config.body_font, text_color=self.config.gold)
         self.slots_count_label.grid(row=0, column=0, padx=10, pady=5)
 
         self.slots_text_label = ctk.CTkLabel(self.slots_frame, text=" slots used", font=self.config.body_font, text_color=self.config.muted)
