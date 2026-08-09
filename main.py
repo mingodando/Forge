@@ -27,6 +27,7 @@ class App:
 
         #--- Other File Activation ---#
         self.setup = get_setup()
+        self.setup.setup_files()
         self.config = Config()
         self.setupnavbar = SetupNavbar()
         self.home_page = get_home()
@@ -109,7 +110,6 @@ class App:
         self.root.mainloop()
 
     def setup_app(self):
-        self.setup.setup_files()
         self.setup.check_user_name()
 
 if __name__ == "__main__":
