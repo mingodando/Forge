@@ -2,9 +2,10 @@ import customtkinter as ctk
 import os
 import ctypes
 
+from backend.directory_setup import resource_root
+
 # 1. Register the font file dynamically at runtime
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FONT_PATH = os.path.join(PROJECT_ROOT, "font", "SpaceGrotesk-Regular.ttf")
+FONT_PATH = os.path.join(resource_root(), "font", "SpaceGrotesk-Regular.ttf")
 
 if os.path.exists(FONT_PATH):
     ctypes.windll.gdi32.AddFontResourceW(FONT_PATH)

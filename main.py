@@ -13,6 +13,9 @@ from home_back.setup_navbar import SetupNavbar
 from home_front.home import HomePage
 from quest.quest_front import get_quest_front
 from habit.habit_front import get_habitfront
+from forge.forge_front import get_forgefront
+from shop.shop_front import get_shopfront
+from settings.settings_front import get_settingsfront
 
 class App:
     def __init__(self):
@@ -36,6 +39,9 @@ class App:
         self.home_front = HomePage()
         self.quest_front = get_quest_front()
         self.habit_front = get_habitfront()
+        self.forge_front = get_forgefront()
+        self.shop_front = get_shopfront()
+        self.settings_front = get_settingsfront()
         self.config.main()
 
         #--- Topbar Widgets ---#
@@ -85,12 +91,19 @@ class App:
         self.habit_front.setup_topbar()
         self.habit_front.setup_habit_list()
         self.forge_page.main()
+        self.forge_front.setup_topbar()
+        self.forge_front.setup_forge_body()
         self.shop_page.main()
+        self.shop_front.setup_topbar()
+        self.shop_front.setup_shop_body()
         self.settings_page.main()
+        self.settings_front.setup_settings_body()
 
         self.setupnavbar.register_topbar(self.home_page.frame, self.home_front.home_topbar)
         self.setupnavbar.register_topbar(self.quest_page.frame, self.quest_page.topbar_frame)
         self.setupnavbar.register_topbar(self.habit_page.frame, self.habit_page.topbar_frame)
+        self.setupnavbar.register_topbar(self.forge_page.frame, self.forge_page.topbar_frame)
+        self.setupnavbar.register_topbar(self.shop_page.frame, self.shop_page.topbar_frame)
         self.setupnavbar.setup_navbar()
 
         self.root.mainloop()

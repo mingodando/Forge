@@ -1,8 +1,12 @@
 from datetime import datetime
 import json
+import os
+
+from backend.directory_setup import Directory
 
 class Time:
     def __init__(self):
+        self.directory = Directory()
         self.dt = None
         self.time_format = None
         self.current_time = None
@@ -26,7 +30,8 @@ class Time:
     def print_time(self):
         self.current_time = self.find_time()
 
-        with open("save.json", "r") as file:
+        save_path = os.path.join(self.directory.main(), "save.json")
+        with open(save_path, "r") as file:
             data = json.load(file)
 
         self.username = data["username"]

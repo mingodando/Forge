@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from backend.config import Config
+from backend.leveling import get_level_info
 from currency.currency import Currency
 from focus.focus_card import FocusCard
 from pages.home_page import get_home
@@ -8,7 +9,11 @@ from backend.start_setup import get_setup
 from quest.quest_back import QuestBack
 from quest.quest_front import get_quest_front
 from habit.habit_back import get_habitback
+from forge.forge_back import get_forgeback, GEAR_CATALOG, GEAR_SLOTS
 from home_back.clock import Time
+
+MATERIAL_ICON = {"Wood": "\U0001FAB5", "Stone": "\U0001FAA8", "Clay": "\U0001F9F1", "Iron": "⛓"}
+GEAR_SLOT_DISPLAY_COUNT = 6
 
 class HomePage:
     def __init__(self):
@@ -20,6 +25,7 @@ class HomePage:
         self.quest_back = QuestBack()
         self.quest_front = get_quest_front()
         self.habit_back = get_habitback()
+        self.forge_back = get_forgeback()
         self.setup = get_setup()
         self.home = get_home()
 
@@ -28,11 +34,24 @@ class HomePage:
         self.coin_display = None
         self.coin_change_display = None
         self.streak_label = None
+        self.streak_value_label = None
+        self.streak_sub_label = None
         self.gear_bonus_label = None
+        self.gear_bonus_value_label = None
+        self.gear_bonus_sub_label = None
         self.quests_completed_label = None
+        self.quests_completed_value_label = None
+        self.quests_completed_sub_label = None
         self.onboard_display1 = None
         self.onboard_display2 = None
         self.onboard_display3 = None
+
+        #--- Level / XP bar ---#
+        self.level_label = None
+        self.title_label = None
+        self.xp_progress_bar = None
+        self.xp_text_label = None
+        self.unlock_hint_label = None
 
         self.bottom_row_frame = None
         self.quest_section_frame = None
@@ -42,17 +61,27 @@ class HomePage:
         self.right_column_frame = None
         self.materials_frame = None
         self.materials_label = None
+        self.material_value_labels = {}
         self.gear_frame = None
         self.gear_label = None
         self.gear_hint_label = None
+        self.gear_slot_labels = []
 
         #--- Topbar ---#
         self.home_topbar = None
 
     def main(self):
         self.coin_frame()
+        self.setup_xp_bar()
         self.focus_session()
         self.home_setup_quest_list()
+        self.refresh_streak_and_gear()
+        self.refresh_level()
+        self.refresh_materials_and_gear()
+
+        self.home.refresh_materials_and_gear = self.refresh_materials_and_gear
+        self.home.refresh_level = self.refresh_level
+        self.home.refresh_streak_and_gear = self.refresh_streak_and_gear
 
     def coin_frame(self):
         self.coin_label = ctk.CTkLabel(self.home.coins_frame, text="COINS", font=self.config.label_font, text_color=self.config.muted)
@@ -77,13 +106,75 @@ class HomePage:
         self.home.coin_change_display = self.coin_change_display
 
         self.streak_label = ctk.CTkLabel(self.home.streak_frame, text="BEST STREAK", font=self.config.label_font, text_color=self.config.muted)
-        self.streak_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")
+        self.streak_label.grid(row=0, column=0, padx=25, pady=(15, 0), sticky="w")
+        self.streak_value_label = ctk.CTkLabel(self.home.streak_frame, text="0 days", font=self.config.heading_font, text_color=self.config.text)
+        self.streak_value_label.grid(row=1, column=0, padx=25, sticky="w")
+        self.streak_sub_label = ctk.CTkLabel(self.home.streak_frame, text="No habits yet", font=self.config.body_font, text_color=self.config.muted)
+        self.streak_sub_label.grid(row=2, column=0, padx=25, pady=(0, 10), sticky="w")
 
         self.gear_bonus_label = ctk.CTkLabel(self.home.gear_bonus_frame, text="GEAR BONUS", font=self.config.label_font, text_color=self.config.muted)
-        self.gear_bonus_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")
+        self.gear_bonus_label.grid(row=0, column=0, padx=25, pady=(15, 0), sticky="w")
+        self.gear_bonus_value_label = ctk.CTkLabel(self.home.gear_bonus_frame, text="+0%", font=self.config.heading_font, text_color=self.config.text)
+        self.gear_bonus_value_label.grid(row=1, column=0, padx=25, sticky="w")
+        self.gear_bonus_sub_label = ctk.CTkLabel(self.home.gear_bonus_frame, text="XP · 0 pieces", font=self.config.body_font, text_color=self.config.muted)
+        self.gear_bonus_sub_label.grid(row=2, column=0, padx=25, pady=(0, 10), sticky="w")
 
         self.quests_completed_label = ctk.CTkLabel(self.home.quests_completed_frame, text="QUESTS DONE", font=self.config.label_font, text_color=self.config.muted)
-        self.quests_completed_label.grid(row=0, column=0, padx=25, pady=10, sticky="es")
+        self.quests_completed_label.grid(row=0, column=0, padx=25, pady=(15, 0), sticky="w")
+        self.quests_completed_value_label = ctk.CTkLabel(self.home.quests_completed_frame, text="0", font=self.config.heading_font, text_color=self.config.text)
+        self.quests_completed_value_label.grid(row=1, column=0, padx=25, sticky="w")
+        self.quests_completed_sub_label = ctk.CTkLabel(self.home.quests_completed_frame, text="+0 today", font=self.config.body_font, text_color=self.config.muted)
+        self.quests_completed_sub_label.grid(row=2, column=0, padx=25, pady=(0, 10), sticky="w")
+
+    def refresh_streak_and_gear(self):
+        name, streak = self.habit_back.get_best_streak()
+        self.streak_value_label.configure(text=f"{streak} day" + ("s" if streak != 1 else ""))
+        self.streak_sub_label.configure(text=f"\U0001F525 {name} · active" if name else "No habits yet")
+
+        bonus_percent = self.forge_back.get_gear_bonus_percent()
+        pieces = self.forge_back.get_equipped_count()
+        self.gear_bonus_value_label.configure(text=f"+{bonus_percent}%")
+        self.gear_bonus_sub_label.configure(text=f"XP · {pieces} piece" + ("s" if pieces != 1 else ""))
+
+        total = self.quest_back.get_completed_total()
+        today = self.quest_back.get_completed_today_count()
+        self.quests_completed_value_label.configure(text=str(total))
+        self.quests_completed_sub_label.configure(text=f"+{today} today")
+
+    #--- Level / XP bar ---#
+    def setup_xp_bar(self):
+        self.home.xpbar_frame.grid_columnconfigure(0, weight=1)
+        self.home.xpbar_frame.grid_columnconfigure(1, weight=0)
+
+        self.level_label = ctk.CTkLabel(self.home.xpbar_frame, text="LEVEL 0", font=self.config.label_font, text_color=self.config.muted)
+        self.level_label.grid(row=0, column=0, padx=25, pady=(10, 0), sticky="w")
+
+        self.xp_text_label = ctk.CTkLabel(self.home.xpbar_frame, text="", font=self.config.body_font, text_color=self.config.muted)
+        self.xp_text_label.grid(row=0, column=1, padx=25, pady=(10, 0), sticky="e")
+
+        self.title_label = ctk.CTkLabel(self.home.xpbar_frame, text="Apprentice", font=self.config.body_font, text_color=self.config.gold)
+        self.title_label.grid(row=1, column=0, padx=25, sticky="w")
+
+        self.unlock_hint_label = ctk.CTkLabel(self.home.xpbar_frame, text="", font=self.config.body_font, text_color=self.config.muted)
+        self.unlock_hint_label.grid(row=1, column=1, padx=25, sticky="e")
+
+        self.xp_progress_bar = ctk.CTkProgressBar(self.home.xpbar_frame, progress_color=self.config.ember, fg_color=self.config.card_hi, corner_radius=8)
+        self.xp_progress_bar.grid(row=2, column=0, columnspan=2, padx=25, pady=(6, 10), sticky="ew")
+        self.xp_progress_bar.set(0)
+
+    def refresh_level(self):
+        data = self.forge_back.read_save()
+        username = data.get("username") or "Smith"
+        info = get_level_info(data.get("xp", 0))
+
+        self.level_label.configure(text=f"LEVEL {info['level']}")
+        self.title_label.configure(text=f"{info['title']} {username}")
+        self.xp_progress_bar.set(info["progress"])
+        self.xp_text_label.configure(text=f"{info['xp_to_next']:,} XP to Lv {info['level'] + 1}")
+
+        next_level = info["level"] + 1
+        unlock_item = next((item for item in GEAR_CATALOG.values() if item["unlock_level"] == next_level), None)
+        self.unlock_hint_label.configure(text=f"unlocks {unlock_item['name']}" if unlock_item else "")
 
     def focus_session(self):
         self.focus.create_ring()
@@ -173,6 +264,7 @@ class HomePage:
         self.materials_label.grid(row=0, column=0, columnspan=2, padx=20, pady=(16, 10), sticky="w")
 
         material_types = [("Wood", self.config.ember), ("Stone", self.config.muted), ("Clay", self.config.gold), ("Iron", self.config.text)]
+        self.material_value_labels = {}
         for i, (name, dot_color) in enumerate(material_types):
             row, col = 1 + i // 2, i % 2
             item_frame = ctk.CTkFrame(self.materials_frame, fg_color="transparent")
@@ -183,23 +275,48 @@ class HomePage:
             icon.grid_propagate(False)
 
             ctk.CTkLabel(item_frame, text=name, font=self.config.body_font, text_color=self.config.muted).grid(row=0, column=1, sticky="w")
-            ctk.CTkLabel(item_frame, text="0", font=self.config.label_font, text_color=self.config.text).grid(row=1, column=1, sticky="w")
+            value_label = ctk.CTkLabel(item_frame, text="0", font=self.config.label_font, text_color=self.config.text)
+            value_label.grid(row=1, column=1, sticky="w")
+            self.material_value_labels[name] = value_label
 
-        #--- Equipped Gear (placeholder) ---#
+        #--- Equipped Gear ---#
         self.gear_frame = ctk.CTkFrame(self.right_column_frame, fg_color=self.config.card, corner_radius=30)
         self.gear_frame.grid(row=1, column=0, sticky="nsew")
-        self.gear_frame.grid_columnconfigure(tuple(range(6)), weight=1)
+        self.gear_frame.grid_columnconfigure(tuple(range(GEAR_SLOT_DISPLAY_COUNT)), weight=1)
 
         self.gear_label = ctk.CTkLabel(self.gear_frame, text="EQUIPPED GEAR", font=self.config.label_font, text_color=self.config.muted)
-        self.gear_label.grid(row=0, column=0, columnspan=6, padx=20, pady=(16, 12), sticky="w")
+        self.gear_label.grid(row=0, column=0, columnspan=GEAR_SLOT_DISPLAY_COUNT, padx=20, pady=(16, 12), sticky="w")
 
-        for slot in range(6):
+        self.gear_slot_labels = []
+        for slot in range(GEAR_SLOT_DISPLAY_COUNT):
             gear_slot = ctk.CTkFrame(self.gear_frame, width=40, height=40, fg_color=self.config.card_hi, corner_radius=12)
             gear_slot.grid(row=1, column=slot, padx=(20 if slot == 0 else 6, 6), pady=(0, 12), sticky="w")
             gear_slot.grid_propagate(False)
             gear_slot.grid_columnconfigure(0, weight=1)
             gear_slot.grid_rowconfigure(0, weight=1)
-            ctk.CTkLabel(gear_slot, text="+", font=self.config.label_font, text_color=self.config.muted).grid(row=0, column=0)
+            slot_label = ctk.CTkLabel(gear_slot, text="+", font=self.config.label_font, text_color=self.config.muted)
+            slot_label.grid(row=0, column=0)
+            self.gear_slot_labels.append(slot_label)
 
         self.gear_hint_label = ctk.CTkLabel(self.gear_frame, text="Empty slots · smelt gear in the Forge →", font=self.config.body_font, text_color=self.config.ember)
-        self.gear_hint_label.grid(row=2, column=0, columnspan=6, padx=20, pady=(0, 14), sticky="w")
+        self.gear_hint_label.grid(row=2, column=0, columnspan=GEAR_SLOT_DISPLAY_COUNT, padx=20, pady=(0, 14), sticky="w")
+
+    def refresh_materials_and_gear(self):
+        materials = self.forge_back.get_materials()
+        for name, label in self.material_value_labels.items():
+            label.configure(text=str(materials.get(name, 0)))
+
+        _, equipped = self.forge_back.get_gear_state()
+        for i, label in enumerate(self.gear_slot_labels):
+            if i < len(GEAR_SLOTS):
+                item_id = equipped.get(GEAR_SLOTS[i])
+                item = GEAR_CATALOG.get(item_id)
+            else:
+                item = None
+            label.configure(text=item["icon"] if item else "+", text_color=self.config.text if item else self.config.muted)
+
+        empty_slots = GEAR_SLOT_DISPLAY_COUNT - len(equipped)
+        if empty_slots > 0:
+            self.gear_hint_label.configure(text="Empty slots · smelt gear in the Forge →")
+        else:
+            self.gear_hint_label.configure(text="All slots equipped ⚔")

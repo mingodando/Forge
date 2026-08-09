@@ -7,6 +7,7 @@ from tkinter import messagebox
 from backend.config import Config
 from currency.currency import Currency
 from backend.directory_setup import Directory
+from forge.forge_back import get_forgeback
 from pages.quest_page import TIER_LEVEL
 from quest.quest_back import XP_MULTIPLIER
 
@@ -24,6 +25,7 @@ class HabitBack:
         self.config = Config()
         self.directory = Directory()
         self.currency = Currency()
+        self.forge_back = get_forgeback()
 
     def main(self):
         pass
@@ -132,8 +134,7 @@ class HabitBack:
             json.dump(habit_data, f, indent=4)
             messagebox.showinfo("Habit Created", f"Habit '{name}' created successfully!")
 
-    @staticmethod
-    def reset_daily(data):
+    def reset_daily(self, data):
         today = date.today()
         streak_date_str = data.get("streak_date")
         streak_date = date.fromisoformat(streak_date_str) if streak_date_str else today
@@ -146,9 +147,14 @@ class HabitBack:
         missed_days = gap - 1 if data.get("last_completed_date") == streak_date_str else gap
 
         if missed_days > 0:
+            protection = self.forge_back.get_missed_day_protection()
             if missed_days == 1 and data.get("shielded"):
                 data["shielded"] = False
+            elif missed_days <= protection:
+                pass
             else:
+                if data.get("streak", 0) > 0:
+                    data["previous_streak"] = data["streak"]
                 data["streak"] = 0
 
         data["checked"] = False
@@ -198,8 +204,10 @@ class HabitBack:
             return 0, 0
 
         coins, xp = self.calculate_rewards(data["difficulty"])
+        xp = round(xp * self.forge_back.get_xp_multiplier())
         self.currency.currency_change(coins)
         self.add_xp(xp)
+        self.forge_back.add_material_for_category(data["category"], data["difficulty"])
 
         data["checked"] = True
         data["streak"] = data.get("streak", 0) + 1
@@ -210,6 +218,13 @@ class HabitBack:
             json.dump(data, f, indent=4)
 
         return coins, xp
+
+    def get_best_streak(self):
+        habits = self.load_habits()
+        if not habits:
+            return None, 0
+        best = max(habits, key=lambda habit: habit.get("streak", 0))
+        return best["name"], best.get("streak", 0)
 
     def get_num_habits_left(self):
         habits = self.load_habits()

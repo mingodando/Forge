@@ -314,6 +314,13 @@ class QuestFront:
         self.quest_back.complete_quest(file_name)
         self.refresh_coins()
         self.render_quest_cards()
+        self.refresh_home_stats()
+
+    def refresh_home_stats(self):
+        for method_name in ("refresh_streak_and_gear", "refresh_level", "refresh_materials_and_gear"):
+            method = getattr(self.home_page, method_name, None)
+            if method is not None:
+                method()
 
     def refresh_coins(self):
         coin_display = self.home_page.coin_display
@@ -338,6 +345,10 @@ class QuestFront:
 
     def on_delete_click(self, file_name):
         self.quest_back.delete_quest(file_name)
+        self.render_quest_cards()
+
+    def refresh_max_slots(self):
+        self.max_slots = self.quest_back.get_max_quests()
         self.render_quest_cards()
 
 _quest_front_instance = None

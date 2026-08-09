@@ -364,6 +364,13 @@ class HabitFront:
         self.refresh_coins()
         self.refresh_habit_topbar()
         self.render_habit_cards()
+        self.refresh_home_stats()
+
+    def refresh_home_stats(self):
+        for method_name in ("refresh_streak_and_gear", "refresh_level", "refresh_materials_and_gear"):
+            method = getattr(self.home_page, method_name, None)
+            if method is not None:
+                method()
 
     def refresh_habit_topbar(self):
         topbar_habit_display = self.home_page.topbar_habit_display
@@ -400,4 +407,8 @@ class HabitFront:
         if not self.habit_back.toggle_shield(file_name):
             messagebox.showinfo("No shield charges", "You don't have any shield charges available.")
             return
+        self.render_habit_cards()
+
+    def refresh_max_slots(self):
+        self.max_slots = self.habit_back.get_max_habits()
         self.render_habit_cards()

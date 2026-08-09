@@ -42,46 +42,68 @@ class Setup:
     def get_user_name(self):
         self.username = simpledialog.askstring("Username", "Please enter your username")
 
-        with open("save.json", "r", encoding="utf-8") as f:
+        with open(os.path.join(self.directory.main(), "save.json"), "r", encoding="utf-8") as f:
             data = json.load(f)
 
         data["username"] = self.username
 
-        with open("save.json", "w", encoding="utf-8") as f:
+        with open(os.path.join(self.directory.main(), "save.json"), "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4)
 
 
     def check_user_name(self):
-        with open("save.json", "r", encoding="utf-8") as f:
+        with open(os.path.join(self.directory.main(), "save.json"), "r", encoding="utf-8") as f:
             data = json.load(f)
             if data["username"] == "":
                 self.get_user_name()
             else:
                 pass
 
+    def migrate_save_data(self, defaults):
+        with open(self.data_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        changed = False
+        for key, default_value in defaults.items():
+            if key not in data:
+                data[key] = default_value
+                changed = True
+
+        if not isinstance(data.get("materials"), dict):
+            data["materials"] = dict(defaults["materials"])
+            changed = True
+
+        if not isinstance(data.get("gear"), dict) or "smelted" not in data.get("gear", {}):
+            data["gear"] = dict(defaults["gear"])
+            changed = True
+
+        if changed:
+            with open(self.data_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4)
+
     def setup_files(self):
-        current_directory = self.directory.backend_directory()
         data = {
             "username": "",
             "level": 0,
             "xp": 0,
             "max_quests": 5,
             "max_habits": 3,
-            "materials": 0,
-            "gear": [],
+            "materials": {"Wood": 0, "Stone": 0, "Clay": 0, "Iron": 0},
+            "gear": {"smelted": [], "equipped": {}},
+            "shield_charges": 1,
             "streaks": 0,
             "history": []
         }
 
-        self.data_file_name = "../save.json"
-
-        self.data_path = os.path.join(current_directory, self.data_file_name)
+        self.data_file_name = "save.json"
+        self.data_path = os.path.join(self.directory.main(), self.data_file_name)
 
         if not os.path.exists(self.data_path):
             with open(self.data_path, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=4)
-            print(f"Successfully created the file: {self.data_file_name}")
+            print(f"Successfully created the file: {self.data_path}")
         else:
+            self.migrate_save_data(data)
             print(f"File already exists")
 
         self.focus_file_name = "focus.txt"
@@ -90,19 +112,13 @@ class Setup:
         if not os.path.exists(self.focus_path):
             with open(self.focus_path, "w", encoding="utf-8") as f:
                 pass
-            print(f"Successfully created the file: {self.focus_file_name}")
+            print(f"Successfully created the file: {self.focus_path}")
         else:
             print(f"File already exists")
 
-        if os.path.isdir(self.directory.quest_file()):
-            print(f"{self.directory.quest_file()} already exists")
-        else:
-            os.mkdir(self.directory.quest_file())
-
-        if os.path.isdir(self.directory.habit_file()):
-            print(f"{self.directory.habit_file()} already exists")
-        else:
-            os.mkdir(self.directory.habit_file())
+        # quest_file()/habit_file() create their own subfolders on demand.
+        self.directory.quest_file()
+        self.directory.habit_file()
 
 _setup_instance = None
 

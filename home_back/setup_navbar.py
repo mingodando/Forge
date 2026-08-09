@@ -12,6 +12,8 @@ from pages.habit_page import get_habit
 from pages.forge_page import get_forge
 from pages.settings_page import get_settings
 from pages.shop_page import get_shop
+from forge.forge_front import get_forgefront
+from shop.shop_front import get_shopfront
 
 class SetupNavbar:
     def __init__(self):
@@ -24,6 +26,8 @@ class SetupNavbar:
         self.forge = get_forge()
         self.shop = get_shop()
         self.settings = get_settings()
+        self.forge_front = get_forgefront()
+        self.shop_front = get_shopfront()
         self.directory = Directory()
 
         self.current_directory = None
@@ -122,14 +126,14 @@ class SetupNavbar:
                                           font=self.config.body_font,
                                           text_color=self.config.text, image=self.forge_button_image,
                                           fg_color=self.config.nav, hover_color=self.config.card_hi,
-                                          compound="top", command=lambda: self.on_nav_click(self.forge_button, self.forge.frame))
+                                          compound="top", command=lambda: self.on_forge_click())
         self.forge_button.grid(row=4, column=0, padx=10)
 
         self.shop_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Shop",
                                           font=self.config.body_font,
                                           text_color=self.config.text, image=self.shop_button_image,
                                           fg_color=self.config.nav, hover_color=self.config.card_hi,
-                                          compound="top", command=lambda: self.on_nav_click(self.shop_button, self.shop.frame))
+                                          compound="top", command=lambda: self.on_shop_click())
         self.shop_button.grid(row=5, column=0, padx=10)
 
         self.settings_button = ctk.CTkButton(self.setup.navbar, height=60, width=80, text="Settings",
@@ -146,6 +150,16 @@ class SetupNavbar:
     def register_topbar(self, frame, topbar_frame):
         self.topbar_by_frame[frame] = topbar_frame
         topbar_frame.grid_remove()
+
+    def on_forge_click(self):
+        self.forge_front.refresh_badges()
+        self.forge_front.render_body()
+        self.on_nav_click(self.forge_button, self.forge.frame)
+
+    def on_shop_click(self):
+        self.shop_front.refresh_coin_badge()
+        self.shop_front.render_cards()
+        self.on_nav_click(self.shop_button, self.shop.frame)
 
     def on_nav_click(self, button, frame):
         self.select_nav_button(button)

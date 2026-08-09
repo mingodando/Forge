@@ -23,6 +23,3 @@ class Settings:
         self.frame = ctk.CTkFrame(self.setup.content_frame, width=1120, height=780, fg_color=self.config.bg, corner_radius=0)
         self.frame.grid(row=0, column=0, sticky="nsew")
         self.frame.grid_propagate(False)
-
-        placeholder = ctk.CTkLabel(self.frame, text="Settings", font=self.config.heading_font, text_color=self.config.text)
-        placeholder.grid(row=0, column=0, padx=35, pady=35, sticky="nw")

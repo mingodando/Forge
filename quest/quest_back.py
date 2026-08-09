@@ -7,6 +7,7 @@ from tkinter import messagebox
 from backend.config import Config
 from currency.currency import Currency
 from backend.directory_setup import Directory
+from forge.forge_back import get_forgeback
 from pages.quest_page import TIER_LEVEL
 
 XP_MULTIPLIER = 6
@@ -17,6 +18,7 @@ class QuestBack:
         self.config = Config()
         self.currency = Currency()
         self.directory = Directory()
+        self.forge_back = get_forgeback()
 
         self.slots_used = None
 
@@ -122,6 +124,26 @@ class QuestBack:
         with open(path, "w") as f:
             json.dump(data, f, indent=4)
 
+    def increment_completed_total(self):
+        path = os.path.join(self.directory.main(), "save.json")
+        with open(path, "r") as f:
+            data = json.load(f)
+
+        data["quests_completed_total"] = data.get("quests_completed_total", 0) + 1
+
+        with open(path, "w") as f:
+            json.dump(data, f, indent=4)
+
+    def get_completed_today_count(self):
+        quests = self.load_quests()
+        return len([quest for quest in quests if quest.get("completed", False)])
+
+    def get_completed_total(self):
+        path = os.path.join(self.directory.main(), "save.json")
+        with open(path, "r") as f:
+            data = json.load(f)
+        return data.get("quests_completed_total", 0)
+
     def complete_quest(self, file_name):
         current_directory = self.directory.quest_file()
         path = os.path.join(current_directory, file_name)
@@ -133,8 +155,11 @@ class QuestBack:
             return 0, 0
 
         coins, xp = self.calculate_rewards(quest_data["difficulty"])
+        xp = round(xp * self.forge_back.get_xp_multiplier())
         self.currency.currency_change(coins)
         self.add_xp(xp)
+        self.forge_back.add_material_for_category(quest_data["category"], quest_data["difficulty"])
+        self.increment_completed_total()
 
         quest_data["completed"] = True
         with open(path, "w") as f:
