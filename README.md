@@ -22,6 +22,8 @@ Go to the **[Releases page](https://github.com/mingodando/Forge/releases)** (als
 3. **Right-click** (or Control-click) `Forge.app` and choose **Open**. macOS will warn that it's from an unidentified developer — click **Open** again to confirm. (This step is only needed the first time.)
 4. The app will ask for your username — enter it, and you're in.
 
+**If step 3 instead says "Forge is damaged and can't be opened"** (this can happen if the app was passed through email/chat instead of downloaded straight from the Release page, which can corrupt its signature): open **Terminal**, type `xattr -cr ` (with a trailing space), drag `Forge.app` into the Terminal window, press Enter, then try step 3 again.
+
 The features would be: 
 1. Home
 2. Quests
