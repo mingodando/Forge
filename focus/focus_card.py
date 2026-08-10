@@ -1,4 +1,5 @@
-import winsound
+import platform
+import subprocess
 
 import customtkinter as ctk
 from tkinter import Canvas
@@ -219,7 +220,14 @@ class FocusCard:
         coin_change_display.configure(text=change_text, text_color=change_color)
 
     def announce_completion(self):
-        winsound.PlaySound("SystemAsterisk", winsound.SND_ALIAS | winsound.SND_ASYNC)
+        system = platform.system()
+        if system == "Windows":
+            import winsound
+            winsound.PlaySound("SystemAsterisk", winsound.SND_ALIAS | winsound.SND_ASYNC)
+        elif system == "Darwin":
+            subprocess.Popen(["afplay", "/System/Library/Sounds/Glass.aiff"])
+        else:
+            subprocess.Popen(["paplay", "/usr/share/sounds/freedesktop/stereo/complete.oga"])
         self.pulse_status_text(3)
 
     def pulse_status_text(self, pulses_left):

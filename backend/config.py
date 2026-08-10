@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import os
+import platform
 import ctypes
 
 from backend.directory_setup import resource_root
@@ -8,7 +9,8 @@ from backend.directory_setup import resource_root
 FONT_PATH = os.path.join(resource_root(), "font", "SpaceGrotesk-Regular.ttf")
 
 if os.path.exists(FONT_PATH):
-    ctypes.windll.gdi32.AddFontResourceW(FONT_PATH)
+    if platform.system() == "Windows":
+        ctypes.windll.gdi32.AddFontResourceW(FONT_PATH)
 else:
     print(f"Warning: Font file not found at {FONT_PATH}")
 
