@@ -7,13 +7,20 @@ Forge basically is a CustomTkinter Application, where the users are most likely 
 Therefore, with this mindset of wanting to help people with their focussing issue, using the idea of gamification will 
 truly help. 
 
-TO INSTALL THE APPLICATION:  
-1. Click on the main.exe file.
-2. Select "View Raw"
-3. Select your designated file location and download it.
-4. After downloading is complete, the Microsoft Defender will give you a warning, bypass that warning by clicking on More info, and a "Run anyway" button will show up at the bottom.
-5. The app will then ask for your username, enter it, and there you go.
-6. ENJOY USING THE APP. 
+## How to Download
+
+Go to the **[Releases page](https://github.com/mingodando/Forge/releases)** (also linked on the right side of the repo homepage under "Releases"), then pick your OS below.
+
+### Windows
+1. On the latest release, under **Assets**, click **`main.exe`** to download it.
+2. Once downloaded, Windows Defender will show a warning ("Windows protected your PC"). Click **More info**, then **Run anyway**.
+3. The app will ask for your username — enter it, and you're in.
+
+### Mac
+1. On the latest release, under **Assets**, click **`ForgeApp-mac.zip`** to download it.
+2. Double-click the downloaded zip to unzip it — this creates a **`main.app`** file (it has the app icon).
+3. **Right-click** (or Control-click) `main.app` and choose **Open**. macOS will warn that it's from an unidentified developer — click **Open** again to confirm. (This step is only needed the first time.)
+4. The app will ask for your username — enter it, and you're in.
 
 The features would be: 
 1. Home
