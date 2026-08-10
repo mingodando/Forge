@@ -12,14 +12,14 @@ truly help.
 Go to the **[Releases page](https://github.com/mingodando/Forge/releases)** (also linked on the right side of the repo homepage under "Releases"), then pick your OS below.
 
 ### Windows
-1. On the latest release, under **Assets**, click **`main.exe`** to download it.
+1. On the latest release, under **Assets**, click **`Forge.exe`** to download it.
 2. Once downloaded, Windows Defender will show a warning ("Windows protected your PC"). Click **More info**, then **Run anyway**.
 3. The app will ask for your username — enter it, and you're in.
 
 ### Mac
 1. On the latest release, under **Assets**, click **`ForgeApp-mac.zip`** to download it.
-2. Double-click the downloaded zip to unzip it — this creates a **`main.app`** file (it has the app icon).
-3. **Right-click** (or Control-click) `main.app` and choose **Open**. macOS will warn that it's from an unidentified developer — click **Open** again to confirm. (This step is only needed the first time.)
+2. Double-click the downloaded zip to unzip it — this creates a **`Forge.app`** file (it has the app icon).
+3. **Right-click** (or Control-click) `Forge.app` and choose **Open**. macOS will warn that it's from an unidentified developer — click **Open** again to confirm. (This step is only needed the first time.)
 4. The app will ask for your username — enter it, and you're in.
 
 The features would be: 

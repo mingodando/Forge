@@ -30,7 +30,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='main',
+    name='Forge',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -49,7 +49,7 @@ exe = EXE(
 if sys.platform == 'darwin':
     app = BUNDLE(
         exe,
-        name='main.app',
+        name='Forge.app',
         icon='images/icon.icns',
-        bundle_identifier='com.forgeapp.main',
+        bundle_identifier='com.forgeapp.forge',
     )

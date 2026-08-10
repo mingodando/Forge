@@ -35,11 +35,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact-name }}
-          path: dist/main.exe
+          path: dist/Forge.exe
 
       - name: Upload Mac app
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact-name }}
-          path: dist/main.app
+          path: dist/Forge.app
