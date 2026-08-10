@@ -7,6 +7,8 @@ Forge basically is a CustomTkinter Application, where the users are most likely 
 Therefore, with this mindset of wanting to help people with their focussing issue, using the idea of gamification will 
 truly help. 
 
+TO INSTALL THE APPLICATION:  
+
 The features would be: 
 1. Home
 2. Quests
