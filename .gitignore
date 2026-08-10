@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+
+# PyInstaller build output (dist/main.exe is the shipped artifact - rebuild via `pyinstaller main.spec`)
+build/
+dist/
+
+# Runtime user data now lives in %APPDATA%\Forge, not the repo
