@@ -1,3 +1,5 @@
+import os
+
 import customtkinter as ctk
 from PIL import Image
 
@@ -64,13 +66,13 @@ class SetupNavbar:
 
     def setup_navbar_images(self):
         self.current_directory = self.directory.images_directory()
-        self.logo_raw_image = Image.open(rf"{self.current_directory}\logo.jpg")
-        self.home_raw_image = Image.open(rf"{self.current_directory}\home_logo.jpg")
-        self.quest_raw_image = Image.open(rf"{self.current_directory}\quest_logo.jpg")
-        self.habit_raw_image = Image.open(rf"{self.current_directory}\habit_logo.jpg")
-        self.forge_raw_image = Image.open(rf"{self.current_directory}\forge_logo.jpg")
-        self.shop_raw_image = Image.open(rf"{self.current_directory}\shop_logo.jpg")
-        self.settings_raw_image = Image.open(rf"{self.current_directory}\settings_logo.jpg")
+        self.logo_raw_image = Image.open(os.path.join(self.current_directory, "logo.jpg"))
+        self.home_raw_image = Image.open(os.path.join(self.current_directory, "home_logo.jpg"))
+        self.quest_raw_image = Image.open(os.path.join(self.current_directory, "quest_logo.jpg"))
+        self.habit_raw_image = Image.open(os.path.join(self.current_directory, "habit_logo.jpg"))
+        self.forge_raw_image = Image.open(os.path.join(self.current_directory, "forge_logo.jpg"))
+        self.shop_raw_image = Image.open(os.path.join(self.current_directory, "shop_logo.jpg"))
+        self.settings_raw_image = Image.open(os.path.join(self.current_directory, "settings_logo.jpg"))
 
     def setup_navbar(self):
         self.setup_navbar_images()
