@@ -30,6 +30,16 @@ jobs:
       - name: Build
         run: python -m PyInstaller main.spec --noconfirm
 
+      - name: Ad-hoc sign app (macOS)
+        if: runner.os == 'macOS'
+        run: codesign --force --deep --sign - dist/Forge.app
+
+      - name: Zip Mac app
+        if: runner.os == 'macOS'
+        run: |
+          cd dist
+          ditto -c -k --sequesterRsrc --keepParent Forge.app Forge-mac.zip
+
       - name: Upload Windows exe
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
@@ -42,4 +52,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact-name }}
-          path: dist/Forge.app
+          path: dist/Forge-mac.zip
