@@ -8,6 +8,12 @@ Therefore, with this mindset of wanting to help people with their focussing issu
 truly help. 
 
 TO INSTALL THE APPLICATION:  
+1. Click on the main.exe file.
+2. Select "View Raw"
+3. Select your designated file location and download it.
+4. After downloading is complete, the Microsoft Defender will give you a warning, bypass that warning by clicking on More info, and a "Run anyway" button will show up at the bottom.
+5. The app will then ask for your username, enter it, and there you go.
+6. ENJOY USING THE APP. 
 
 The features would be: 
 1. Home
