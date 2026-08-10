@@ -43,12 +43,13 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='images/icon.ico',
 )
 
 if sys.platform == 'darwin':
     app = BUNDLE(
         exe,
         name='main.app',
-        icon=None,
+        icon='images/icon.icns',
         bundle_identifier='com.forgeapp.main',
     )
