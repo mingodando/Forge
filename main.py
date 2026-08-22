@@ -1,6 +1,9 @@
+import os
+
 import customtkinter as ctk
 
 from backend.config import Config
+from backend.directory_setup import Directory
 from backend.start_setup import get_setup
 from pages.home_page import get_home
 from pages.quest_page import get_quest
@@ -71,6 +74,8 @@ class App:
 #----- Starting Functions -----#
     def main(self):
         self.root.title("Forge")
+        icon_path = os.path.join(Directory().images_directory(), "icon.ico")
+        self.root.after(200, lambda: self.root.iconbitmap(icon_path))
         window_width, window_height = 1280, 900
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
