@@ -115,6 +115,19 @@ class QuestFront:
         self.popup.grab_set()
         self.popup.grid_columnconfigure(0, weight=1)
 
+        app_window = self.quest_page.frame.winfo_toplevel()
+
+        def center_popup(event=None):
+            app_window.update_idletasks()
+            self.popup.update_idletasks()
+            x = app_window.winfo_x() + (app_window.winfo_width() - self.popup.winfo_width()) // 2
+            y = app_window.winfo_y() + (app_window.winfo_height() - self.popup.winfo_height()) // 2
+            self.popup.geometry(f"+{x}+{y}")
+
+        app_window.bind("<Configure>", center_popup)
+        self.popup.bind("<Destroy>", lambda e: app_window.unbind("<Configure>"))
+        center_popup()
+
         self.popup.update()
         if platform.system() == "Windows":
             # noinspection PyUnresolvedReferences

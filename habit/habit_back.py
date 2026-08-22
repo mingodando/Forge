@@ -26,6 +26,7 @@ class HabitBack:
         self.directory = Directory()
         self.currency = Currency()
         self.forge_back = get_forgeback()
+        self.habits_left = None
 
     def main(self):
         pass
